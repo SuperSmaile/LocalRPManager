@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RP Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0d0b0e; --bg2:#13101a; --bg3:#1a1525;
+  --border:#2e2440; --accent:#c9a84c; --accent2:#8b2fc9;
+  --accent3:#e85d5d; --text:#e8dfc8; --text-muted:#7a6e8a; --card:#16121f;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(139,47,201,.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(201,168,76,.06) 0%,transparent 50%);pointer-events:none;z-index:0;}
+.noise{position:fixed;inset:0;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px;pointer-events:none;z-index:0;}
+
+/* Header */
+header{position:relative;z-index:10;text-align:center;padding:2.5rem 2rem 1.5rem;border-bottom:1px solid var(--border);}
+.hOrnament{font-size:.72rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:.6rem;opacity:.8;user-select:none;}
+h1{font-family:'Cinzel Decorative',serif;font-size:clamp(1.8rem,5vw,3.2rem);font-weight:700;background:linear-gradient(135deg,var(--accent) 0%,#fff8e7 50%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;}
+.hSub{margin-top:.4rem;font-size:.95rem;color:var(--text-muted);font-style:italic;}
+.admin-badge{display:none;align-items:center;gap:.4rem;margin:.7rem auto 0;width:fit-content;padding:.28rem .85rem;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.35);border-radius:20px;font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.12em;color:var(--accent);animation:fadeIn .35s ease;}
+.admin-badge.visible{display:flex;}
+.admin-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.7)}}
+
+/* Lock button */
+#adminTrigger{position:fixed;bottom:1.2rem;right:1.2rem;z-index:200;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;opacity:.15;transition:opacity .3s,box-shadow .3s,border-color .3s,color .3s;}
+#adminTrigger:hover{opacity:.55;}
+#adminTrigger.admin-active{opacity:1;border-color:var(--accent);color:var(--accent);box-shadow:0 0 18px rgba(201,168,76,.35);}
+
+/* Nav */
+.nav{position:sticky;top:0;z-index:100;display:flex;align-items:stretch;background:rgba(13,11,14,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);overflow-x:auto;}
+.nav-tabs{display:flex;flex:1;}
+.nav-tab{flex:1;min-width:150px;padding:.9rem 1.4rem;background:none;border:none;border-bottom:2px solid transparent;color:var(--text-muted);font-family:'Cinzel',serif;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .25s;}
+.nav-tab:hover{color:var(--text);background:rgba(255,255,255,.02);}
+.nav-tab.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(201,168,76,.05);}
+.lang-toggle{display:flex;align-items:center;padding:0 .9rem;border-left:1px solid var(--border);gap:.15rem;flex-shrink:0;}
+.lang-btn{padding:.3rem .6rem;background:none;border:1px solid transparent;border-radius:3px;color:var(--text-muted);font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;cursor:pointer;transition:all .2s;}
+.lang-btn.active{color:var(--accent);border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.08);}
+.lang-btn:hover:not(.active){color:var(--text);}
+.lang-sep{color:var(--border);font-size:.8rem;}
+
+/* Main */
+main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:2.5rem 1.5rem;}
+.section{display:none;}
+.section.active{display:block;animation:fadeIn .4s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;}
+.section-title{font-family:'Cinzel',serif;font-size:1.45rem;font-weight:600;color:var(--accent);letter-spacing:.05em;}
+.section-title span{display:block;font-family:'Crimson Pro',serif;font-size:.88rem;color:var(--text-muted);font-weight:400;margin-top:.15rem;}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem 1.3rem;border-radius:3px;font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .22s;border:1px solid;}
+.btn-primary{background:var(--accent);color:#1a1000;border-color:var(--accent);font-weight:600;}
+.btn-primary:hover{background:#dbb85a;box-shadow:0 0 20px rgba(201,168,76,.3);}
+.btn-ghost{background:transparent;color:var(--text-muted);border-color:var(--border);}
+.btn-ghost:hover{color:var(--text);border-color:var(--text-muted);}
+.btn-danger{background:transparent;color:var(--accent3);border-color:rgba(232,93,93,.3);font-size:.68rem;padding:.28rem .65rem;}
+.btn-danger:hover{background:rgba(232,93,93,.1);}
+
+/* Admin-only hidden until is-admin */
+.admin-only{display:none!important;}
+body.is-admin .admin-only{display:inline-flex!important;}
+
+/* Modals */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(10px);z-index:1000;align-items:center;justify-content:center;padding:1rem;}
+.modal-overlay.open{display:flex;animation:fadeIn .2s ease;}
+.modal{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:2rem;width:100%;max-width:520px;box-shadow:0 40px 80px rgba(0,0,0,.65);}
+.modal h3{font-family:'Cinzel',serif;font-size:1.15rem;color:var(--accent);margin-bottom:1.5rem;letter-spacing:.05em;}
+.modal-footer{display:flex;gap:.75rem;justify-content:flex-end;margin-top:1.5rem;}
+
+/* Admin login */
+#adminLoginModal .modal{max-width:380px;border-color:rgba(201,168,76,.3);box-shadow:0 0 60px rgba(201,168,76,.07),0 40px 80px rgba(0,0,0,.65);}
+.lock-icon{text-align:center;font-size:2.8rem;margin-bottom:.6rem;}
+.admin-subtitle{text-align:center;color:var(--text-muted);font-style:italic;font-size:.9rem;margin-bottom:1.4rem;line-height:1.5;}
+.admin-error{margin-top:.65rem;padding:.55rem .85rem;background:rgba(232,93,93,.1);border:1px solid rgba(232,93,93,.3);border-radius:3px;color:var(--accent3);font-size:.88rem;display:none;text-align:center;}
+.admin-error.visible{display:block;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+
+/* Form */
+.form-group{margin-bottom:1.2rem;}
+label{display:block;font-family:'Cinzel',serif;font-size:.73rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.38rem;}
+input,textarea,select{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:3px;color:var(--text);font-family:'Crimson Pro',serif;font-size:1rem;padding:.62rem .88rem;transition:border-color .2s;outline:none;}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(201,168,76,.1);}
+textarea{resize:vertical;min-height:100px;}
+select option{background:var(--bg3);}
+
+/* Filters */
+.filters{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.filter-chip{padding:.3rem .95rem;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-muted);font-family:'Crimson Pro',serif;font-size:.88rem;cursor:pointer;transition:all .2s;}
+.filter-chip:hover{border-color:var(--accent);color:var(--accent);}
+.filter-chip.active{background:rgba(201,168,76,.15);border-color:var(--accent);color:var(--accent);}
+
+/* Thematic cards */
+.thematics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.2rem;}
+.thematic-card{background:var(--card);border:1px solid var(--border);border-radius:5px;padding:1.35rem;transition:all .3s;position:relative;overflow:hidden;}
+.thematic-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-color,var(--accent)),transparent);opacity:.7;}
+.thematic-card:hover{border-color:rgba(201,168,76,.3);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.3);}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;margin-bottom:.7rem;}
+.card-title{font-family:'Cinzel',serif;font-size:1.03rem;font-weight:600;color:var(--text);line-height:1.3;}
+.card-badge{padding:.18rem .6rem;border-radius:3px;font-size:.68rem;font-family:'Cinzel',serif;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}
+.badge-active{background:rgba(72,199,142,.15);color:#48c78e;border:1px solid rgba(72,199,142,.3);}
+.badge-voting{background:rgba(201,168,76,.15);color:var(--accent);border:1px solid rgba(201,168,76,.3);}
+.badge-planned{background:rgba(139,47,201,.15);color:#b87fff;border:1px solid rgba(139,47,201,.3);}
+.badge-archived{background:rgba(100,100,100,.15);color:#888;border:1px solid rgba(100,100,100,.3);}
+.card-desc{font-size:.93rem;color:var(--text-muted);line-height:1.55;margin-bottom:.9rem;}
+.card-tags{display:flex;flex-wrap:wrap;gap:.38rem;margin-bottom:.9rem;}
+.tag{padding:.13rem .52rem;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:3px;font-size:.76rem;color:var(--text-muted);}
+
+/* Vote */
+.vote-section{border-top:1px solid var(--border);padding-top:.9rem;margin-top:.3rem;}
+.vote-bar-wrap{margin-bottom:.65rem;}
+.vote-label-row{display:flex;justify-content:space-between;font-size:.78rem;color:var(--text-muted);margin-bottom:.28rem;}
+.vote-bar{height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
+.vote-fill{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.23,1,.32,1);}
+.fill-yes{background:linear-gradient(90deg,#48c78e,#2dd4a0);}
+.fill-no{background:linear-gradient(90deg,var(--accent3),#ff8080);}
+.vote-buttons{display:flex;gap:.55rem;align-items:center;flex-wrap:wrap;}
+.vote-btn{display:flex;align-items:center;gap:.38rem;padding:.42rem .9rem;border-radius:3px;border:1px solid;font-family:'Cinzel',serif;font-size:.73rem;letter-spacing:.06em;cursor:pointer;transition:all .2s;background:transparent;}
+.vote-yes{border-color:rgba(72,199,142,.4);color:#48c78e;}
+.vote-yes:hover,.vote-yes.voted{background:rgba(72,199,142,.15);}
+.vote-no{border-color:rgba(232,93,93,.4);color:var(--accent3);}
+.vote-no:hover,.vote-no.voted{background:rgba(232,93,93,.15);}
+.vote-btn.voted{box-shadow:0 0 10px rgba(255,255,255,.08);}
+.vote-count{margin-left:auto;font-size:.78rem;color:var(--text-muted);}
+.card-actions{display:flex;gap:.5rem;margin-top:.7rem;}
+
+/* Mechanic cards */
+.mechanics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:1.2rem;}
+.mechanic-card{background:var(--card);border:1px solid var(--border);border-radius:5px;cursor:pointer;transition:all .3s;overflow:hidden;position:relative;}
+.mechanic-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(139,47,201,.05) 0%,transparent 60%);pointer-events:none;}
+.mechanic-card:hover{border-color:rgba(139,47,201,.4);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.4),0 0 0 1px rgba(139,47,201,.1);}
+.mechanic-inner{padding:1.35rem;}
+.mechanic-icon{width:42px;height:42px;border-radius:8px;background:rgba(139,47,201,.15);border:1px solid rgba(139,47,201,.3);display:flex;align-items:center;justify-content:center;font-size:1.25rem;margin-bottom:.9rem;}
+.mechanic-name{font-family:'Cinzel',serif;font-size:.98rem;font-weight:600;color:var(--text);margin-bottom:.38rem;}
+.mechanic-status{display:inline-block;padding:.14rem .52rem;border-radius:3px;font-size:.68rem;font-family:'Cinzel',serif;letter-spacing:.05em;margin-bottom:.7rem;}
+.status-wip{background:rgba(201,168,76,.12);color:var(--accent);border:1px solid rgba(201,168,76,.25);}
+.status-testing{background:rgba(0,140,255,.12);color:#60b3ff;border:1px solid rgba(0,140,255,.25);}
+.status-done{background:rgba(72,199,142,.12);color:#48c78e;border:1px solid rgba(72,199,142,.25);}
+.mechanic-preview{font-size:.88rem;color:var(--text-muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.mechanic-footer{padding:.7rem 1.35rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:.76rem;color:var(--text-muted);background:rgba(0,0,0,.15);}
+.click-hint{display:flex;align-items:center;gap:.35rem;font-style:italic;}
+
+/* Mechanic detail */
+.mechanic-modal{max-width:700px;max-height:90vh;overflow-y:auto;}
+.mechanic-modal::-webkit-scrollbar{width:4px;}
+.mechanic-modal::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.mech-detail-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.4rem;}
+.mech-detail-icon{width:54px;height:54px;border-radius:10px;flex-shrink:0;background:rgba(139,47,201,.2);border:1px solid rgba(139,47,201,.4);display:flex;align-items:center;justify-content:center;font-size:1.55rem;}
+.mech-detail-title{font-family:'Cinzel',serif;font-size:1.35rem;color:var(--text);line-height:1.2;margin-bottom:.38rem;}
+.mech-detail-desc{font-size:1.03rem;color:var(--text-muted);line-height:1.7;margin-bottom:1.4rem;white-space:pre-wrap;}
+.yt-container{position:relative;padding-bottom:56.25%;height:0;border-radius:5px;overflow:hidden;border:1px solid var(--border);background:#000;}
+.yt-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+.yt-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-muted);font-style:italic;gap:.5rem;font-size:.92rem;}
+.yt-placeholder svg{opacity:.25;}
+
+/* Empty */
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--text-muted);}
+.empty-state .empty-icon{font-size:2.8rem;margin-bottom:.9rem;opacity:.35;}
+.empty-state h3{font-family:'Cinzel',serif;font-size:1.05rem;color:var(--text-muted);margin-bottom:.4rem;}
+.empty-state p{font-style:italic;font-size:.92rem;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+@media(max-width:600px){.thematics-grid,.mechanics-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="noise"></div>
+
+<header>
+  <div class="hOrnament" id="hOrnament">⸻ Chronicle Board ⸻</div>
+  <h1>RP Manager</h1>
+  <p class="hSub" id="hSub">Manage your roleplay world with grace</p>
+  <div class="admin-badge" id="adminBadge">
+    <div class="admin-dot"></div>
+    <span id="adminBadgeText">Admin Mode Active</span>
+  </div>
+</header>
+
+<nav class="nav">
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="tabT" onclick="showSection('thematics',this)">⚔ Thematics &amp; Votes</button>
+    <button class="nav-tab" id="tabM" onclick="showSection('mechanics',this)">⚙ WIP Mechanics</button>
+  </div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="langEN" onclick="setLang('en')">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" id="langRU" onclick="setLang('ru')">RU</button>
+  </div>
+</nav>
+
+<main>
+  <div id="thematics" class="section active">
+    <div class="section-header">
+      <div class="section-title">
+        <span id="secTT">Roleplay Thematics</span>
+        <span id="secTS">Vote on what comes next</span>
+      </div>
+      <button class="btn btn-primary admin-only" id="btnAT" onclick="openModal('addThematic')">+ Add Thematic</button>
+    </div>
+    <div class="filters">
+      <button class="filter-chip active" onclick="filterThematics('all',this)" id="fAll">All</button>
+      <button class="filter-chip" onclick="filterThematics('active',this)" id="fActive">Active</button>
+      <button class="filter-chip" onclick="filterThematics('voting',this)" id="fVoting">Voting</button>
+      <button class="filter-chip" onclick="filterThematics('planned',this)" id="fPlanned">Planned</button>
+      <button class="filter-chip" onclick="filterThematics('archived',this)" id="fArchived">Archived</button>
+    </div>
+    <div class="thematics-grid" id="thematicsGrid"></div>
+  </div>
+
+  <div id="mechanics" class="section">
+    <div class="section-header">
+      <div class="section-title">
+        <span id="secMT">WIP Mechanics</span>
+        <span id="secMS">Work-in-progress game systems</span>
+      </div>
+      <button class="btn btn-primary admin-only" id="btnAM" onclick="openModal('addMechanic')">+ Add Mechanic</button>
+    </div>
+    <div class="mechanics-grid" id="mechanicsGrid"></div>
+  </div>
+</main>
+
+<!-- Admin Login -->
+<div class="modal-overlay" id="adminLoginModal">
+  <div class="modal">
+    <div class="lock-icon">🔐</div>
+    <p class="admin-subtitle" id="adminSubtitle">Enter your secret passphrase to unlock admin controls.</p>
+    <div class="form-group">
+      <label id="adminLabel">Passphrase</label>
+      <input type="password" id="adminPass" placeholder="Type your secret..." onkeydown="if(event.key==='Enter')checkAdmin()">
+      <div class="admin-error" id="adminError">Wrong passphrase. Try again.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="btnACancel" onclick="closeModal('adminLogin')">Cancel</button>
+      <button class="btn btn-primary" id="btnUnlock" onclick="checkAdmin()">🔓 Unlock</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Thematic -->
+<div class="modal-overlay" id="addThematicModal">
+  <div class="modal">
+    <h3 id="addThematicH">✦ New Thematic</h3>
+    <div class="form-group"><label id="lbTTitle">Title</label><input type="text" id="tTitle" placeholder="e.g. Cyberpunk dystopia..."></div>
+    <div class="form-group"><label id="lbTDesc">Description</label><textarea id="tDesc" placeholder="Describe the thematic, setting, mood..."></textarea></div>
+    <div class="form-group">
+      <label id="lbTStatus">Status</label>
+      <select id="tStatus">
+        <option value="voting" id="oTV">Voting</option>
+        <option value="planned" id="oTP">Planned</option>
+        <option value="active" id="oTA">Active</option>
+        <option value="archived" id="oTAr">Archived</option>
+      </select>
+    </div>
+    <div class="form-group"><label id="lbTTags">Tags (comma separated)</label><input type="text" id="tTags" placeholder="e.g. fantasy, dark, political"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="btnTCan" onclick="closeModal('addThematic')">Cancel</button>
+      <button class="btn btn-primary" id="btnTCre" onclick="addThematic()">Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Mechanic -->
+<div class="modal-overlay" id="addMechanicModal">
+  <div class="modal">
+    <h3 id="addMechanicH">⚙ New Mechanic</h3>
+    <div class="form-group"><label id="lbMName">Name</label><input type="text" id="mName" placeholder="e.g. Surgery Mechanic..."></div>
+    <div class="form-group"><label id="lbMIcon">Icon / Emoji</label><input type="text" id="mIcon" placeholder="🔧" maxlength="4" style="max-width:80px"></div>
+    <div class="form-group">
+      <label id="lbMStatus">Status</label>
+      <select id="mStatus">
+        <option value="wip">WIP</option>
+        <option value="testing" id="oMT">Testing</option>
+        <option value="done" id="oMD">Done</option>
+      </select>
+    </div>
+    <div class="form-group"><label id="lbMDesc">Description</label><textarea id="mDesc" placeholder="Describe how this mechanic works..."></textarea></div>
+    <div class="form-group"><label id="lbMYt">YouTube URL (optional)</label><input type="text" id="mYt" placeholder="https://www.youtube.com/watch?v=..."></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="btnMCan" onclick="closeModal('addMechanic')">Cancel</button>
+      <button class="btn btn-primary" id="btnMCre" onclick="addMechanic()">Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mechanic Detail -->
+<div class="modal-overlay" id="mechanicDetailModal">
+  <div class="modal mechanic-modal">
+    <div class="mech-detail-header">
+      <div class="mech-detail-icon" id="dIcon">⚙</div>
+      <div><div class="mech-detail-title" id="dName">-</div><span class="mechanic-status" id="dStatus">WIP</span></div>
+    </div>
+    <div class="mech-detail-desc" id="dDesc">-</div>
+    <div class="yt-container" id="dYt"></div>
+    <div class="modal-footer" style="margin-top:1.2rem">
+      <button class="btn btn-ghost" id="btnDClose" onclick="closeModal('mechanicDetail')">Close</button>
+    </div>
+  </div>
+</div>
+
+<button id="adminTrigger" onclick="handleAdminTrigger()" title="Admin">🔒</button>
+
+<script>
+// ══════════════════════════════════════════════
+//   Change ADMIN_PASSPHRASE to your own secret!
+//   It's SHA-256 hashed — never stored plain.
+// ══════════════════════════════════════════════
+const ADMIN_PASSPHRASE = "shadowkeeper";
+
+// ── i18n ───────────────────────────────────────
+const L = {
+  en: {
+    hOrnament:"⸻ Chronicle Board ⸻", hSub:"Manage your roleplay world with grace",
+    adminBadgeText:"Admin Mode Active",
+    tabT:"⚔ Thematics & Votes", tabM:"⚙ WIP Mechanics",
+    secTT:"Roleplay Thematics", secTS:"Vote on what comes next",
+    secMT:"WIP Mechanics", secMS:"Work-in-progress game systems",
+    btnAT:"+ Add Thematic", btnAM:"+ Add Mechanic",
+    fAll:"All", fActive:"Active", fVoting:"Voting", fPlanned:"Planned", fArchived:"Archived",
+    adminSubtitle:"Enter your secret passphrase to unlock admin controls.",
+    adminLabel:"Passphrase", adminPassPh:"Type your secret...",
+    adminError:"Wrong passphrase. Try again.",
+    btnACancel:"Cancel", btnUnlock:"🔓 Unlock",
+    addThematicH:"✦ New Thematic", addMechanicH:"⚙ New Mechanic",
+    lbTTitle:"Title", lbTDesc:"Description", lbTStatus:"Status", lbTTags:"Tags (comma separated)",
+    lbMName:"Name", lbMIcon:"Icon / Emoji", lbMStatus:"Status", lbMDesc:"Description", lbMYt:"YouTube URL (optional)",
+    tTitlePh:"e.g. Cyberpunk dystopia...", tDescPh:"Describe the thematic, setting, mood...",
+    tTagsPh:"e.g. fantasy, dark, political", mNamePh:"e.g. Surgery Mechanic...", mDescPh:"Describe how this mechanic works...",
+    oTV:"Voting", oTP:"Planned", oTA:"Active", oTAr:"Archived",
+    oMT:"Testing", oMD:"Done",
+    btnTCan:"Cancel", btnTCre:"Create", btnMCan:"Cancel", btnMCre:"Create", btnDClose:"Close",
+    sActive:"Active", sVoting:"Voting", sPlanned:"Planned", sArchived:"Archived",
+    sTesting:"Testing", sDone:"Done",
+    vYes:"Yes", vNo:"No", votes:"votes", vote1:"vote",
+    removeBtn:"✕ Remove", clickExpand:"Click to expand", noVideo:"No video provided",
+    emptyT:"No thematics found", emptyTSub:"Add your first thematic to get started",
+    emptyM:"No mechanics yet", emptyMSub:"Add your first WIP mechanic",
+    noDesc:"No description provided.",
+    confirmT:"Remove this thematic?", confirmM:"Remove this mechanic?",
+    alertTitle:"Please enter a title", alertName:"Please enter a name",
+  },
+  ru: {
+    hOrnament:"⸻ Доска Хроник ⸻", hSub:"Управляй своим миром ролевых игр",
+    adminBadgeText:"Режим Администратора",
+    tabT:"⚔ Тематики и Голоса", tabM:"⚙ Механики (WIP)",
+    secTT:"Тематики РП", secTS:"Голосуй за следующую",
+    secMT:"Механики в разработке", secMS:"Игровые системы в процессе создания",
+    btnAT:"+ Добавить тематику", btnAM:"+ Добавить механику",
+    fAll:"Все", fActive:"Активные", fVoting:"Голосование", fPlanned:"Планируются", fArchived:"Архив",
+    adminSubtitle:"Введи секретную фразу, чтобы войти в режим администратора.",
+    adminLabel:"Пароль", adminPassPh:"Введи секрет...",
+    adminError:"Неверная фраза. Попробуй снова.",
+    btnACancel:"Отмена", btnUnlock:"🔓 Войти",
+    addThematicH:"✦ Новая тематика", addMechanicH:"⚙ Новая механика",
+    lbTTitle:"Название", lbTDesc:"Описание", lbTStatus:"Статус", lbTTags:"Теги (через запятую)",
+    lbMName:"Название", lbMIcon:"Иконка / Эмодзи", lbMStatus:"Статус", lbMDesc:"Описание", lbMYt:"Ссылка YouTube (необязательно)",
+    tTitlePh:"напр. Киберпанк-антиутопия...", tDescPh:"Опиши тематику, сеттинг, настроение...",
+    tTagsPh:"напр. фэнтези, тёмное, политика", mNamePh:"напр. Механика хирургии...", mDescPh:"Опиши как работает механика...",
+    oTV:"Голосование", oTP:"Запланировано", oTA:"Активно", oTAr:"В архиве",
+    oMT:"Тестирование", oMD:"Готово",
+    btnTCan:"Отмена", btnTCre:"Создать", btnMCan:"Отмена", btnMCre:"Создать", btnDClose:"Закрыть",
+    sActive:"Активно", sVoting:"Голосование", sPlanned:"Запланировано", sArchived:"В архиве",
+    sTesting:"Тестирование", sDone:"Готово",
+    vYes:"Да", vNo:"Нет", votes:"голосов", vote1:"голос",
+    removeBtn:"✕ Удалить", clickExpand:"Нажми для подробностей", noVideo:"Видео не добавлено",
+    emptyT:"Тематики не найдены", emptyTSub:"Добавь первую тематику",
+    emptyM:"Механик ещё нет", emptyMSub:"Добавь первую механику выше",
+    noDesc:"Описание не добавлено.",
+    confirmT:"Удалить эту тематику?", confirmM:"Удалить эту механику?",
+    alertTitle:"Введи название", alertName:"Введи название",
+  }
+};
+
+let lang = localStorage.getItem('rp_lang') || 'en';
+const tr = k => L[lang]?.[k] ?? L.en?.[k] ?? k;
+
+// Elements to translate: [id, key, 'text'|'placeholder']
+const TRANSLATIONS = [
+  ['hOrnament','hOrnament','text'], ['hSub','hSub','text'],
+  ['adminBadgeText','adminBadgeText','text'],
+  ['tabT','tabT','text'], ['tabM','tabM','text'],
+  ['secTT','secTT','text'], ['secTS','secTS','text'],
+  ['secMT','secMT','text'], ['secMS','secMS','text'],
+  ['btnAT','btnAT','text'], ['btnAM','btnAM','text'],
+  ['fAll','fAll','text'], ['fActive','fActive','text'],
+  ['fVoting','fVoting','text'], ['fPlanned','fPlanned','text'], ['fArchived','fArchived','text'],
+  ['adminSubtitle','adminSubtitle','text'], ['adminLabel','adminLabel','text'],
+  ['adminError','adminError','text'], ['btnACancel','btnACancel','text'], ['btnUnlock','btnUnlock','text'],
+  ['addThematicH','addThematicH','text'], ['addMechanicH','addMechanicH','text'],
+  ['lbTTitle','lbTTitle','text'], ['lbTDesc','lbTDesc','text'],
+  ['lbTStatus','lbTStatus','text'], ['lbTTags','lbTTags','text'],
+  ['lbMName','lbMName','text'], ['lbMIcon','lbMIcon','text'],
+  ['lbMStatus','lbMStatus','text'], ['lbMDesc','lbMDesc','text'], ['lbMYt','lbMYt','text'],
+  ['oTV','oTV','text'], ['oTP','oTP','text'], ['oTA','oTA','text'], ['oTAr','oTAr','text'],
+  ['oMT','oMT','text'], ['oMD','oMD','text'],
+  ['btnTCan','btnTCan','text'], ['btnTCre','btnTCre','text'],
+  ['btnMCan','btnMCan','text'], ['btnMCre','btnMCre','text'], ['btnDClose','btnDClose','text'],
+  ['adminPass','adminPassPh','placeholder'],
+  ['tTitle','tTitlePh','placeholder'], ['tDesc','tDescPh','placeholder'],
+  ['tTags','tTagsPh','placeholder'], ['mName','mNamePh','placeholder'], ['mDesc','mDescPh','placeholder'],
+];
+
+function applyLang() {
+  TRANSLATIONS.forEach(([id, key, type]) => {
+    const el = document.getElementById(id); if(!el) return;
+    if (type === 'text') el.textContent = tr(key);
+    else el.placeholder = tr(key);
+  });
+  document.getElementById('langEN').classList.toggle('active', lang==='en');
+  document.getElementById('langRU').classList.toggle('active', lang==='ru');
+}
+
+function setLang(l) {
+  lang = l;
+  localStorage.setItem('rp_lang', l);
+  applyLang(); renderThematics(); renderMechanics();
+}
+
+// ── Admin ───────────────────────────────────────
+let isAdmin = false, ADMIN_HASH = '';
+
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function init() {
+  ADMIN_HASH = await sha256(ADMIN_PASSPHRASE);
+  applyLang(); renderThematics(); renderMechanics();
+}
+
+function handleAdminTrigger() {
+  if (isAdmin) {
+    isAdmin = false;
+    document.body.classList.remove('is-admin');
+    document.getElementById('adminBadge').classList.remove('visible');
+    const t = document.getElementById('adminTrigger');
+    t.classList.remove('admin-active'); t.textContent = '🔒';
+    renderThematics(); renderMechanics();
+  } else {
+    document.getElementById('adminPass').value = '';
+    document.getElementById('adminError').classList.remove('visible');
+    openModal('adminLogin');
+    setTimeout(() => document.getElementById('adminPass').focus(), 160);
+  }
+}
+
+async function checkAdmin() {
+  const hash = await sha256(document.getElementById('adminPass').value);
+  if (hash === ADMIN_HASH) {
+    isAdmin = true;
+    document.body.classList.add('is-admin');
+    document.getElementById('adminBadge').classList.add('visible');
+    const t = document.getElementById('adminTrigger');
+    t.classList.add('admin-active'); t.textContent = '🔓';
+    closeModal('adminLogin');
+    renderThematics(); renderMechanics();
+  } else {
+    document.getElementById('adminError').classList.add('visible');
+    document.getElementById('adminPass').value = '';
+    document.getElementById('adminPass').focus();
+    const m = document.querySelector('#adminLoginModal .modal');
+    m.style.animation='none'; m.offsetHeight; m.style.animation='shake .4s ease';
+  }
+}
+
+// ── State ───────────────────────────────────────
+let state = JSON.parse(localStorage.getItem('rpmgr3') || 'null') || {
+  thematics:[
+    {id:1,title:"Sword & Sorcery",status:"active",
+     desc:"Classic high fantasy with ancient magic, legendary weapons, and epic quests across mystical realms.",
+     tags:["fantasy","magic","combat"],yes:12,no:2,voted:null},
+    {id:2,title:"Cyberpunk City",status:"voting",
+     desc:"A rain-drenched neon metropolis where corporations rule, hackers rebel, and augmented humans struggle with identity.",
+     tags:["sci-fi","dystopia","tech"],yes:8,no:5,voted:null},
+    {id:3,title:"Cosmic Horror",status:"planned",
+     desc:"Lovecraftian mysteries, sanity mechanics, and existential dread as investigators unravel impossible truths.",
+     tags:["horror","mystery","eldritch"],yes:15,no:1,voted:null}
+  ],
+  mechanics:[
+    {id:1,name:"Surgery Mechanic",icon:"🩺",status:"wip",
+     desc:"A detailed medical roleplay system involving risk assessment, skill checks, complications, and recovery timelines.\n\nPlayers can perform surgeries with different specialization levels affecting success rates. Critical failures introduce complications like infections or internal bleeding.",
+     yt:""},
+    {id:2,name:"Interrogation System",icon:"🔎",status:"testing",
+     desc:"Multi-phase interrogation with psychological pressure, rapport building, and deception detection.\n\nNPCs have unique breaking points based on their backstory and current stress level.",
+     yt:""}
+  ],
+  nextId:10
+};
+const save = () => localStorage.setItem('rpmgr3', JSON.stringify(state));
+
+// ── Nav ─────────────────────────────────────────
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='thematics') renderThematics();
+  if(id==='mechanics') renderMechanics();
+}
+
+// ── Modal ────────────────────────────────────────
+function openModal(n){document.getElementById(n+'Modal').classList.add('open');}
+function closeModal(n){document.getElementById(n+'Modal').classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');});
+});
+
+// ── Thematics ───────────────────────────────────
+let currentFilter='all';
+const statusColors={active:'#48c78e',voting:'#c9a84c',planned:'#b87fff',archived:'#666'};
+
+function filterThematics(f,btn){
+  currentFilter=f;
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active'); renderThematics();
+}
+
+function sTr(s){return{active:tr('sActive'),voting:tr('sVoting'),planned:tr('sPlanned'),archived:tr('sArchived')}[s]||s;}
+function mTr(s){return{wip:'WIP',testing:tr('sTesting'),done:tr('sDone')}[s]||s;}
+
+function renderThematics(){
+  const grid=document.getElementById('thematicsGrid');
+  const items=currentFilter==='all'?state.thematics:state.thematics.filter(x=>x.status===currentFilter);
+  if(!items.length){
+    grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">⚔</div><h3>${tr('emptyT')}</h3><p>${tr('emptyTSub')}</p></div>`;
+    return;
+  }
+  grid.innerHTML=items.map(th=>{
+    const tot=th.yes+th.no;
+    const yp=tot?Math.round(th.yes/tot*100):50, np=tot?Math.round(th.no/tot*100):50;
+    const vw=tot===1?tr('vote1'):tr('votes');
+    const col=statusColors[th.status]||'#888';
+    const tags=th.tags.map(g=>`<span class="tag">${g}</span>`).join('');
+    const del=isAdmin?`<div class="card-actions"><button class="btn btn-danger" onclick="deleteThematic(${th.id})">${tr('removeBtn')}</button></div>`:'';
+    return `<div class="thematic-card" style="--accent-color:${col}">
+      <div class="card-top"><div class="card-title">${th.title}</div><span class="card-badge badge-${th.status}">${sTr(th.status)}</span></div>
+      <div class="card-desc">${th.desc}</div>
+      ${tags?`<div class="card-tags">${tags}</div>`:''}
+      <div class="vote-section">
+        <div class="vote-bar-wrap">
+          <div class="vote-label-row"><span>👍 ${tr('vYes')} (${th.yes})</span><span>${yp}%</span></div>
+          <div class="vote-bar"><div class="vote-fill fill-yes" style="width:${yp}%"></div></div>
+        </div>
+        <div class="vote-bar-wrap">
+          <div class="vote-label-row"><span>👎 ${tr('vNo')} (${th.no})</span><span>${np}%</span></div>
+          <div class="vote-bar"><div class="vote-fill fill-no" style="width:${np}%"></div></div>
+        </div>
+        <div class="vote-buttons">
+          <button class="vote-btn vote-yes ${th.voted==='yes'?'voted':''}" onclick="vote(${th.id},'yes')">👍 ${tr('vYes')}</button>
+          <button class="vote-btn vote-no ${th.voted==='no'?'voted':''}" onclick="vote(${th.id},'no')">👎 ${tr('vNo')}</button>
+          <span class="vote-count">${tot} ${vw}</span>
+        </div>
+      </div>${del}
+    </div>`;
+  }).join('');
+}
+
+function vote(id,choice){
+  const th=state.thematics.find(x=>x.id===id);if(!th)return;
+  if(th.voted===choice){th[choice]--;th.voted=null;}
+  else{if(th.voted)th[th.voted]--;th[choice]++;th.voted=choice;}
+  save();renderThematics();
+}
+
+function addThematic(){
+  const title=document.getElementById('tTitle').value.trim();
+  if(!title){alert(tr('alertTitle'));return;}
+  const tags=document.getElementById('tTags').value.split(',').map(s=>s.trim()).filter(Boolean);
+  state.thematics.unshift({id:state.nextId++,title,desc:document.getElementById('tDesc').value.trim(),
+    status:document.getElementById('tStatus').value,tags,yes:0,no:0,voted:null});
+  save();closeModal('addThematic');
+  ['tTitle','tDesc','tTags'].forEach(i=>document.getElementById(i).value='');
+  renderThematics();
+}
+
+function deleteThematic(id){
+  if(!confirm(tr('confirmT')))return;
+  state.thematics=state.thematics.filter(x=>x.id!==id);
+  save();renderThematics();
+}
+
+// ── Mechanics ───────────────────────────────────
+function renderMechanics(){
+  const grid=document.getElementById('mechanicsGrid');
+  if(!state.mechanics.length){
+    grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">⚙</div><h3>${tr('emptyM')}</h3><p>${tr('emptyMSub')}</p></div>`;
+    return;
+  }
+  grid.innerHTML=state.mechanics.map(m=>{
+    const del=isAdmin?`<button class="btn btn-danger" style="font-size:.62rem;padding:.2rem .5rem" onclick="event.stopPropagation();deleteMechanic(${m.id})">✕</button>`:'';
+    return `<div class="mechanic-card" onclick="openMechanicDetail(${m.id})">
+      <div class="mechanic-inner">
+        <div class="mechanic-icon">${m.icon||'⚙'}</div>
+        <div class="mechanic-name">${m.name}</div>
+        <span class="mechanic-status status-${m.status}">${mTr(m.status)}</span>
+        <div class="mechanic-preview">${m.desc||tr('noDesc')}</div>
+      </div>
+      <div class="mechanic-footer">
+        <span class="click-hint">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          ${tr('clickExpand')}
+        </span>${del}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openMechanicDetail(id){
+  const m=state.mechanics.find(x=>x.id===id);if(!m)return;
+  document.getElementById('dIcon').textContent=m.icon||'⚙';
+  document.getElementById('dName').textContent=m.name;
+  const s=document.getElementById('dStatus');
+  s.textContent=mTr(m.status);s.className='mechanic-status status-'+m.status;
+  document.getElementById('dDesc').textContent=m.desc||tr('noDesc');
+  const yc=document.getElementById('dYt');
+  const vid=extractYtId(m.yt);
+  if(vid){
+    yc.innerHTML=`<iframe src="https://www.youtube.com/embed/${vid}" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>`;
+  } else {
+    yc.innerHTML=`<div class="yt-placeholder"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46A2.78 2.78 0 001.46 6.42 29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19.1C5.12 19.56 12 19.56 12 19.56s6.88 0 8.6-.46a2.78 2.78 0 001.94-1.96 29 29 0 00.46-5.29 29 29 0 00-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>${tr('noVideo')}</div>`;
+  }
+  openModal('mechanicDetail');
+}
+
+function extractYtId(url){
+  if(!url)return null;
+  const m=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+  return m?m[1]:null;
+}
+
+function addMechanic(){
+  const name=document.getElementById('mName').value.trim();
+  if(!name){alert(tr('alertName'));return;}
+  state.mechanics.unshift({id:state.nextId++,name,
+    icon:document.getElementById('mIcon').value.trim()||'⚙',
+    status:document.getElementById('mStatus').value,
+    desc:document.getElementById('mDesc').value.trim(),
+    yt:document.getElementById('mYt').value.trim()});
+  save();closeModal('addMechanic');
+  ['mName','mIcon','mDesc','mYt'].forEach(i=>document.getElementById(i).value='');
+  renderMechanics();
+}
+
+function deleteMechanic(id){
+  if(!confirm(tr('confirmM')))return;
+  state.mechanics=state.mechanics.filter(x=>x.id!==id);
+  save();renderMechanics();
+}
+
+init();
+</script>
+</body>
+</html>
