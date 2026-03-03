@@ -11,6 +11,40 @@
 body{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,serif;min-height:100vh;overflow-x:hidden;}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(139,47,201,.08),transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(201,168,76,.06),transparent 50%);pointer-events:none;z-index:0;}
 .noise{position:fixed;inset:0;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px;pointer-events:none;z-index:0;}
+
+/* ── sync bar ── */
+#syncBar{
+  position:fixed;top:0;left:0;right:0;z-index:9999;
+  height:2px;background:var(--accent);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .3s ease,opacity .4s ease;opacity:1;
+}
+#syncBar.loading{transform:scaleX(.7);}
+#syncBar.done{transform:scaleX(1);opacity:0;}
+
+/* ── sync status chip ── */
+#syncChip{
+  position:fixed;bottom:1.2rem;left:1.2rem;z-index:400;
+  display:flex;align-items:center;gap:.45rem;
+  padding:.3rem .8rem;border-radius:20px;
+  font-family:'Cinzel',serif;font-size:.65rem;letter-spacing:.08em;
+  border:1px solid var(--border);background:var(--bg2);color:var(--muted);
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+#syncChip.show{opacity:1;}
+#syncChip.ok{color:#48c78e;border-color:rgba(72,199,142,.3);}
+#syncChip.err{color:var(--accent3);border-color:rgba(232,93,93,.3);}
+.sync-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
+
+/* ── not-configured banner ── */
+#configBanner{
+  background:rgba(201,168,76,.08);border-bottom:1px solid rgba(201,168,76,.2);
+  padding:.7rem 1.5rem;text-align:center;
+  font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.07em;color:var(--accent);
+  display:none;
+}
+#configBanner.show{display:block;}
+
 header{position:relative;z-index:10;text-align:center;padding:2.5rem 2rem 1.5rem;border-bottom:1px solid var(--border);}
 .ornament{font-size:.7rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:.6rem;opacity:.8;user-select:none;}
 h1{font-family:'Cinzel Decorative',serif;font-size:clamp(1.8rem,5vw,3.2rem);font-weight:700;background:linear-gradient(135deg,var(--accent),#fff8e7 50%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;}
@@ -52,23 +86,23 @@ body.admin .admin-only{display:inline-flex!important;}
 .modal{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:2rem;width:100%;max-width:500px;box-shadow:0 40px 80px rgba(0,0,0,.7);}
 .modal h3{font-family:'Cinzel',serif;font-size:1.1rem;color:var(--accent);margin-bottom:1.4rem;letter-spacing:.05em;}
 .mfoot{display:flex;gap:.7rem;justify-content:flex-end;margin-top:1.4rem;}
-#adminModal .modal{max-width:400px;border-color:rgba(201,168,76,.25);}
+#adminModal .modal{max-width:420px;border-color:rgba(201,168,76,.25);}
 .lock-big{text-align:center;font-size:3rem;margin-bottom:.5rem;}
 .admin-hint{text-align:center;color:var(--muted);font-style:italic;font-size:.88rem;line-height:1.6;margin-bottom:1.4rem;}
 .err-box{margin-top:.6rem;padding:.5rem .8rem;background:rgba(232,93,93,.1);border:1px solid rgba(232,93,93,.3);border-radius:3px;color:var(--accent3);font-size:.86rem;text-align:center;display:none;}
 .err-box.on{display:block;}
 @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
-/* Setup screen */
-.setup-screen{text-align:center;padding:1rem 0;}
-.setup-screen .setup-icon{font-size:2.5rem;margin-bottom:.75rem;}
-.setup-screen h3{font-family:'Cinzel',serif;color:var(--accent);font-size:1rem;letter-spacing:.08em;margin-bottom:.5rem;}
-.setup-screen p{font-size:.9rem;color:var(--muted);line-height:1.6;margin-bottom:1.5rem;}
-.hash-output{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:.7rem .9rem;font-family:monospace;font-size:.75rem;color:#60b3ff;word-break:break-all;margin-bottom:.75rem;text-align:left;line-height:1.5;}
-.copy-hint{font-size:.8rem;color:var(--muted);font-style:italic;margin-bottom:1rem;}
-.copy-hint code{background:rgba(255,255,255,.07);padding:.1rem .35rem;border-radius:3px;font-family:monospace;color:var(--accent);font-style:normal;}
-.step{display:flex;align-items:flex-start;gap:.75rem;text-align:left;margin-bottom:.65rem;font-size:.88rem;color:var(--muted);}
-.step-num{width:22px;height:22px;border-radius:50%;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:var(--accent);font-family:'Cinzel',serif;font-size:.7rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.05rem;}
-/* Form */
+.setup-screen{text-align:center;padding:.5rem 0 .25rem;}
+.setup-icon{font-size:2.5rem;margin-bottom:.6rem;}
+.setup-title{font-family:'Cinzel',serif;color:var(--accent);font-size:.9rem;letter-spacing:.1em;margin-bottom:.5rem;}
+.setup-desc{font-size:.88rem;color:var(--muted);line-height:1.6;margin-bottom:1.3rem;}
+.hash-output{background:var(--bg2);border:1px solid rgba(201,168,76,.3);border-radius:4px;padding:.7rem .9rem;font-family:monospace;font-size:.72rem;color:#60b3ff;word-break:break-all;line-height:1.5;cursor:pointer;user-select:all;}
+.hash-output:hover{border-color:rgba(201,168,76,.6);}
+.copy-row{display:flex;align-items:center;justify-content:space-between;margin:.5rem 0 1rem;font-size:.78rem;color:var(--muted);}
+.copy-row code{background:rgba(255,255,255,.07);padding:.1rem .35rem;border-radius:3px;font-family:monospace;color:var(--accent);font-style:normal;}
+.step-list{text-align:left;display:flex;flex-direction:column;gap:.45rem;}
+.step{display:flex;align-items:flex-start;gap:.6rem;font-size:.83rem;color:var(--muted);line-height:1.5;}
+.sn{width:20px;height:20px;border-radius:50%;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);color:var(--accent);font-family:'Cinzel',serif;font-size:.65rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem;}
 .fg{margin-bottom:1.15rem;}
 label{display:block;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem;}
 input,textarea,select{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:3px;color:var(--text);font-family:'Crimson Pro',serif;font-size:1rem;padding:.6rem .85rem;outline:none;transition:border-color .18s;}
@@ -138,13 +172,17 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
 </style>
 </head>
 <body>
+<div id="syncBar"></div>
+<div id="configBanner">⚠ JSONBin not configured — data is local only. See setup instructions below.</div>
 <div class="noise"></div>
+
 <header>
   <div class="ornament" id="xOr">⸻ Chronicle Board ⸻</div>
   <h1>RP Manager</h1>
   <p class="sub" id="xSub">Manage your roleplay world with grace</p>
   <div class="admin-badge" id="xBadge"><div class="dot"></div><span id="xBT">Admin Mode</span></div>
 </header>
+
 <nav class="nav">
   <div class="nav-tabs">
     <button class="tab active" id="tabT" onclick="showSec('thematics',this)">⚔ Thematics &amp; Votes</button>
@@ -156,6 +194,7 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
     <button class="lb" id="lRU" onclick="setLang('ru')">RU</button>
   </div>
 </nav>
+
 <main>
   <div id="thematics" class="sec active">
     <div class="sec-head">
@@ -180,15 +219,12 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
   </div>
 </main>
 
-<!-- ═══════════════════════════════════════════════
-     ADMIN MODAL  —  two screens inside one overlay
-     Screen A: login (ADMIN_HASH is set)
-     Screen B: first-time setup tool (ADMIN_HASH is "")
-════════════════════════════════════════════════ -->
+<!-- sync status chip -->
+<div id="syncChip"><div class="sync-dot"></div><span id="syncTxt">Synced</span></div>
+
+<!-- ADMIN MODAL -->
 <div class="overlay" id="adminModal">
   <div class="modal">
-
-    <!-- LOGIN SCREEN -->
     <div id="screenLogin">
       <div class="lock-big">🔐</div>
       <p class="admin-hint" id="xAH">Enter your passphrase to unlock admin controls.</p>
@@ -203,32 +239,30 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
         <button class="btn btn-gold" onclick="doLogin()" id="xAS">Unlock</button>
       </div>
     </div>
-
-    <!-- SETUP SCREEN  (shown only when ADMIN_HASH === "") -->
     <div id="screenSetup" style="display:none">
       <div class="setup-screen">
         <div class="setup-icon">🔑</div>
-        <h3 id="setupTitle">ONE-TIME PASSWORD SETUP</h3>
-        <p id="setupDesc">No admin hash is set in this file yet. Follow these steps to create your password — it will never be stored in plain text.</p>
+        <div class="setup-title" id="setupTitle">ONE-TIME HASH SETUP</div>
+        <div class="setup-desc" id="setupDesc">ADMIN_HASH is empty. Type your passphrase and generate a hash to paste into the file.</div>
       </div>
       <div class="fg">
         <label id="setupLabel">Choose a passphrase</label>
         <input type="password" id="setupPass" autocomplete="off" placeholder="min 6 characters"
-               oninput="onSetupType()" onkeydown="if(event.key==='Enter'){event.preventDefault();genHash();}">
+               onkeydown="if(event.key==='Enter'){event.preventDefault();genHash();}">
       </div>
       <div id="hashResult" style="display:none">
-        <div class="hash-output" id="hashOut"></div>
-        <p class="copy-hint" id="setupStep1">1 — Copy the hash above.</p>
-        <p class="copy-hint" id="setupStep2">2 — Open <code>index.html</code> in a text editor.</p>
-        <p class="copy-hint" id="setupStep3">3 — Find the line <code>var ADMIN_HASH = "";</code> and replace the empty string with the hash.</p>
-        <p class="copy-hint" id="setupStep4">4 — Save and re-deploy to GitHub Pages. Done!</p>
+        <div class="hash-output" id="hashOut" title="Click to select all"></div>
+        <div class="copy-row">
+          <span id="copyHint">Click hash to select • then Ctrl+C</span>
+          <button class="btn btn-ghost" style="font-size:.65rem;padding:.2rem .6rem" onclick="copyHash()">Copy</button>
+        </div>
+        <div class="step-list" id="stepList"></div>
       </div>
       <div class="mfoot">
         <button class="btn btn-ghost" onclick="closeOv('admin')">Close</button>
         <button class="btn btn-gold" onclick="genHash()" id="btnGen">Generate Hash</button>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -294,40 +328,102 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
 <button id="lockBtn" onclick="handleLock()">🔒</button>
 
 <script>
-// ════════════════════════════════════════════════════════════════════
-//  ADMIN_HASH — paste your SHA-256 hash here after running setup.
-//  While this is empty "" the lock button shows the setup tool.
-//  The plaintext password is NEVER stored anywhere in this file.
-// ════════════════════════════════════════════════════════════════════
-var ADMIN_HASH = "fallback_5542bdb8";
+// ═══════════════════════════════════════════════════════════════════════
+//  STEP 1 — Sign up free at https://jsonbin.io
+//  STEP 2 — Create a new Bin with this initial JSON:
+//            {"thematics":[],"mechanics":[],"nextId":1}
+//  STEP 3 — Paste your Bin ID and API Key below
+//  STEP 4 — Run the hash setup (click lock icon) and paste ADMIN_HASH
+//
+//  READ access is public. WRITE access uses the API key — keep the file
+//  private or accept that the key is visible in source (fine for RP use).
+// ═══════════════════════════════════════════════════════════════════════
+var BIN_ID    = "";   // e.g.  "6643f2e9acd3cb34a83f1234"
+var API_KEY   = "";   // e.g.  "$2a$10$abcdefg..."
+var ADMIN_HASH = "";  // generated by the setup tool below
 
-// ── hashing ──────────────────────────────────────────────────────────
+// ── JSONBin API ──────────────────────────────────────────────────────────
+var BIN_URL = "https://api.jsonbin.io/v3/b/";
+var configured = BIN_ID !== "" && API_KEY !== "";
+
+function syncLoad() {
+  if (!configured) {
+    document.getElementById('configBanner').classList.add('show');
+    renderT(); renderM();
+    return;
+  }
+  startBar();
+  fetch(BIN_URL + BIN_ID + "/latest", {
+    headers: { "X-Master-Key": API_KEY, "X-Bin-Meta": "false" }
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    // jsonbin wraps in {record:...} but with meta=false it's direct
+    S = data;
+    if (!S.thematics) S.thematics = [];
+    if (!S.mechanics) S.mechanics = [];
+    if (!S.nextId)    S.nextId = 1;
+    doneBar(true);
+    renderT(); renderM();
+  })
+  .catch(function(){ doneBar(false); renderT(); renderM(); });
+}
+
+function syncSave() {
+  if (!configured) return;
+  startBar();
+  fetch(BIN_URL + BIN_ID, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Master-Key": API_KEY,
+      "X-Bin-Versioning": "false"
+    },
+    body: JSON.stringify(S)
+  })
+  .then(function(r){ doneBar(r.ok); })
+  .catch(function(){ doneBar(false); });
+}
+
+// For votes (non-admin) — also push to remote
+function syncVote() { syncSave(); }
+
+// ── Sync bar / chip ───────────────────────────────────────────────────────
+var syncTimer = null;
+function startBar(){
+  var b=document.getElementById('syncBar');
+  b.className='loading'; b.style.opacity='1';
+}
+function doneBar(ok){
+  var b=document.getElementById('syncBar');
+  b.className='done';
+  var chip=document.getElementById('syncChip');
+  var txt=document.getElementById('syncTxt');
+  chip.className='sync-chip show '+(ok?'ok':'err');
+  txt.textContent = ok ? 'Synced' : 'Offline';
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(function(){ chip.classList.remove('show'); }, 2500);
+}
+
+// ── Hash ───────────────────────────────────────────────────────────────────
 function hashPass(str) {
-  // Try Web Crypto (HTTPS / localhost / GitHub Pages)
   if (window.crypto && crypto.subtle) {
     return crypto.subtle.digest('SHA-256', new TextEncoder().encode(str))
-      .then(function(buf) {
+      .then(function(buf){
         return Array.from(new Uint8Array(buf))
           .map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
       });
   }
-  // Fallback: simple deterministic hash for file:// testing
   return Promise.resolve((function(s){
-    var h = 0x811c9dc5;
-    for (var i = 0; i < s.length; i++) {
-      h ^= s.charCodeAt(i);
-      h = (h * 0x01000193) >>> 0;
-    }
-    var salt = "rpmgr_2024";
-    for (var j = 0; j < salt.length; j++) {
-      h ^= salt.charCodeAt(j);
-      h = (h * 0x01000193) >>> 0;
-    }
-    return 'fallback_' + h.toString(16).padStart(8,'0');
+    var h=0x811c9dc5;
+    for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=(h*0x01000193)>>>0; }
+    var salt="rpmgr_salt";
+    for(var j=0;j<salt.length;j++){ h^=salt.charCodeAt(j); h=(h*0x01000193)>>>0; }
+    return 'fb_'+h.toString(16).padStart(8,'0');
   })(str));
 }
 
-// ── i18n ─────────────────────────────────────────────────────────────
+// ── i18n ───────────────────────────────────────────────────────────────────
 var L = {
   en:{
     xOr:"⸻ Chronicle Board ⸻", xSub:"Manage your roleplay world with grace", xBT:"Admin Mode",
@@ -338,14 +434,15 @@ var L = {
     xfA:"All", xfAc:"Active", xfV:"Voting", xfP:"Planned", xfAr:"Archived",
     xPL:"Passphrase", xAC:"Cancel", xAS:"Unlock",
     xAH:"Enter your passphrase to unlock admin controls.",
-    setupTitle:"ONE-TIME PASSWORD SETUP",
-    setupDesc:"No admin hash is set in this file yet. Type your passphrase below, click Generate, then paste the result into index.html.",
+    setupTitle:"ONE-TIME HASH SETUP",
+    setupDesc:"ADMIN_HASH is empty. Generate a hash from your passphrase, then paste it into the file.",
     setupLabel:"Choose a passphrase",
-    setupStep1:"1 — Copy the hash above.",
-    setupStep2:'2 — Open index.html in a text editor.',
-    setupStep3:'3 — Find var ADMIN_HASH = ""; and replace the empty string with the hash.',
-    setupStep4:"4 — Save and re-deploy to GitHub Pages. Done!",
+    copyHint:"Click hash to select all",
     btnGen:"Generate Hash",
+    step1:"Copy the hash above (click it or use the Copy button).",
+    step2:"Open index.html in a text editor.",
+    step3:'Find   var ADMIN_HASH = "";   and paste the hash between the quotes.',
+    step4:"Save the file and push to GitHub. Done!",
     errWrong:"Wrong passphrase.", errShort:"Minimum 6 characters.",
     xATH:"✦ New Thematic", xLTi:"Title", xLDe:"Description", xLSt:"Status", xLTa:"Tags (comma separated)",
     oV:"Voting", oP:"Planned", oAc:"Active", oAr:"Archived", xTC:"Cancel", xTCr:"Create",
@@ -371,13 +468,14 @@ var L = {
     xPL:"Пароль", xAC:"Отмена", xAS:"Войти",
     xAH:"Введи секретную фразу, чтобы войти.",
     setupTitle:"ПЕРВОНАЧАЛЬНАЯ НАСТРОЙКА",
-    setupDesc:"Хэш пароля ещё не задан в файле. Введи фразу, нажми «Создать хэш» и вставь результат в index.html.",
+    setupDesc:"ADMIN_HASH не задан. Сгенерируй хэш и вставь его в файл.",
     setupLabel:"Придумай фразу-пароль",
-    setupStep1:"1 — Скопируй хэш выше.",
-    setupStep2:"2 — Открой index.html в текстовом редакторе.",
-    setupStep3:'3 — Найди строку var ADMIN_HASH = ""; и вставь хэш вместо пустой строки.',
-    setupStep4:"4 — Сохрани и задеплой на GitHub Pages. Готово!",
+    copyHint:"Нажми на хэш, чтобы выделить",
     btnGen:"Создать хэш",
+    step1:"Скопируй хэш (нажми на него или кнопку Copy).",
+    step2:"Открой index.html в текстовом редакторе.",
+    step3:'Найди   var ADMIN_HASH = "";   и вставь хэш между кавычками.',
+    step4:"Сохрани и запушь на GitHub. Готово!",
     errWrong:"Неверная фраза.", errShort:"Минимум 6 символов.",
     xATH:"✦ Новая тематика", xLTi:"Название", xLDe:"Описание", xLSt:"Статус", xLTa:"Теги (через запятую)",
     oV:"Голосование", oP:"Запланировано", oAc:"Активно", oAr:"В архиве", xTC:"Отмена", xTCr:"Создать",
@@ -394,76 +492,68 @@ var L = {
     alertTitle:"Введи название", alertName:"Введи название"
   }
 };
-
 var lang = localStorage.getItem('rp_lang') || 'en';
-function tr(k){ return (L[lang]&&L[lang][k]!==undefined) ? L[lang][k] : (L.en[k]||k); }
-
-var TIDS = ['xOr','xSub','xBT','tabT','tabM','xTT','xTS','xMT','xMS',
-  'xBAT','xBAM','xfA','xfAc','xfV','xfP','xfAr',
-  'xPL','xAC','xAS','xAH',
-  'setupTitle','setupDesc','setupLabel','setupStep1','setupStep2','setupStep3','setupStep4','btnGen',
+function tr(k){ return (L[lang]&&L[lang][k]!==undefined)?L[lang][k]:(L.en[k]||k); }
+var TIDS=['xOr','xSub','xBT','tabT','tabM','xTT','xTS','xMT','xMS',
+  'xBAT','xBAM','xfA','xfAc','xfV','xfP','xfAr','xPL','xAC','xAS','xAH',
+  'setupTitle','setupDesc','setupLabel','copyHint','btnGen',
   'xATH','xLTi','xLDe','xLSt','xLTa','oV','oP','oAc','oAr','xTC','xTCr',
   'xAMH','xLMN','xLMI','xLMS','xLMD','xLMY','oMT','oMD','xMC','xMCr','xDC'];
-
 function applyLang(){
-  TIDS.forEach(function(id){
-    var el=document.getElementById(id); if(el) el.textContent=tr(id);
-  });
+  TIDS.forEach(function(id){ var el=document.getElementById(id); if(el) el.textContent=tr(id); });
   document.getElementById('lEN').classList.toggle('on',lang==='en');
   document.getElementById('lRU').classList.toggle('on',lang==='ru');
 }
 function setLang(l){ lang=l; localStorage.setItem('rp_lang',l); applyLang(); renderT(); renderM(); }
 
-// ── Admin ─────────────────────────────────────────────────────────────
+// ── Admin ──────────────────────────────────────────────────────────────────
 var isAdmin = false;
 
 function handleLock(){
   if(isAdmin){
-    // logout
     isAdmin=false;
     document.body.classList.remove('admin');
     document.getElementById('xBadge').classList.remove('on');
     var lb=document.getElementById('lockBtn');
     lb.classList.remove('open'); lb.textContent='🔒';
-    renderT(); renderM();
-    return;
+    renderT(); renderM(); return;
   }
-  // Show setup tool if no hash baked in, otherwise show login
-  if(ADMIN_HASH === ""){
+  if(ADMIN_HASH==="fallback_5542bdb8"){
     document.getElementById('screenLogin').style.display='none';
     document.getElementById('screenSetup').style.display='block';
     document.getElementById('hashResult').style.display='none';
     document.getElementById('setupPass').value='';
+    // build step list
+    var sl=document.getElementById('stepList'); sl.innerHTML='';
+    ['step1','step2','step3','step4'].forEach(function(k,i){
+      sl.innerHTML+='<div class="step"><div class="sn">'+(i+1)+'</div><span>'+tr(k)+'</span></div>';
+    });
   } else {
     document.getElementById('screenLogin').style.display='block';
     document.getElementById('screenSetup').style.display='none';
     document.getElementById('passInput').value='';
     document.getElementById('loginErr').className='err-box';
-    document.getElementById('loginErr').textContent='';
   }
   openOv('admin');
   setTimeout(function(){
-    var inp = ADMIN_HASH === "" ? document.getElementById('setupPass') : document.getElementById('passInput');
+    var inp=ADMIN_HASH===""?document.getElementById('setupPass'):document.getElementById('passInput');
     if(inp) inp.focus();
-  }, 180);
+  },180);
 }
 
 function doLogin(){
-  var pass = document.getElementById('passInput').value;
-  var errEl = document.getElementById('loginErr');
+  var pass=document.getElementById('passInput').value;
+  var errEl=document.getElementById('loginErr');
   errEl.className='err-box'; errEl.textContent='';
-
-  if(pass.length < 1){ errEl.textContent=tr('errShort'); errEl.className='err-box on'; return; }
-
+  if(!pass){ errEl.textContent=tr('errShort'); errEl.className='err-box on'; return; }
   hashPass(pass).then(function(h){
-    if(h === ADMIN_HASH){
+    if(h===ADMIN_HASH){
       isAdmin=true;
       document.body.classList.add('admin');
       document.getElementById('xBadge').classList.add('on');
       var lb=document.getElementById('lockBtn');
       lb.classList.add('open'); lb.textContent='🔓';
-      closeOv('admin');
-      renderT(); renderM();
+      closeOv('admin'); renderT(); renderM();
     } else {
       errEl.textContent=tr('errWrong'); errEl.className='err-box on';
       document.getElementById('passInput').value='';
@@ -474,63 +564,37 @@ function doLogin(){
   });
 }
 
-// Setup tool — generate and display hash
-function onSetupType(){
-  // hide old result when user types again
-  document.getElementById('hashResult').style.display='none';
-}
-
 function genHash(){
-  var pass = document.getElementById('setupPass').value;
-  if(pass.length < 6){
-    alert(tr('errShort')); return;
-  }
+  var pass=document.getElementById('setupPass').value;
+  if(pass.length<6){ alert(tr('errShort')); return; }
   hashPass(pass).then(function(h){
-    document.getElementById('hashOut').textContent = h;
+    document.getElementById('hashOut').textContent=h;
     document.getElementById('hashResult').style.display='block';
-    // auto-select for easy copy
-    var el = document.getElementById('hashOut');
-    var range = document.createRange();
-    range.selectNodeContents(el);
-    var sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
+    var el=document.getElementById('hashOut');
+    var range=document.createRange(); range.selectNodeContents(el);
+    var sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
   });
 }
+function copyHash(){
+  var h=document.getElementById('hashOut').textContent;
+  if(!h) return;
+  if(navigator.clipboard){ navigator.clipboard.writeText(h); }
+  else { var t=document.createElement('textarea'); t.value=h; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); }
+  document.getElementById('copyHint').textContent='✓ Copied!';
+  setTimeout(function(){ document.getElementById('copyHint').textContent=tr('copyHint'); },2000);
+}
 
-// ── Overlays ──────────────────────────────────────────────────────────
+// ── Overlays ───────────────────────────────────────────────────────────────
 function openOv(n){ document.getElementById(n+'Modal').classList.add('on'); }
 function closeOv(n){ document.getElementById(n+'Modal').classList.remove('on'); }
 document.querySelectorAll('.overlay').forEach(function(o){
   o.addEventListener('click',function(e){ if(e.target===o) o.classList.remove('on'); });
 });
 
-// ── Data ──────────────────────────────────────────────────────────────
-var S = JSON.parse(localStorage.getItem('rpmgr8')||'null') || {
-  thematics:[
-    {id:1,title:"Sword & Sorcery",status:"active",
-     desc:"Classic high fantasy with ancient magic, legendary weapons, and epic quests across mystical realms.",
-     tags:["fantasy","magic","combat"],yes:12,no:2,voted:null},
-    {id:2,title:"Cyberpunk City",status:"voting",
-     desc:"A rain-drenched neon metropolis where corporations rule, hackers rebel, and augmented humans struggle with identity.",
-     tags:["sci-fi","dystopia","tech"],yes:8,no:5,voted:null},
-    {id:3,title:"Cosmic Horror",status:"planned",
-     desc:"Lovecraftian mysteries, sanity mechanics, and existential dread as investigators unravel impossible truths.",
-     tags:["horror","mystery","eldritch"],yes:15,no:1,voted:null}
-  ],
-  mechanics:[
-    {id:1,name:"Surgery Mechanic",icon:"🩺",status:"wip",
-     desc:"A detailed medical roleplay system involving risk assessment, skill checks, complications, and recovery timelines.\n\nPlayers can perform surgeries with different specialization levels. Critical failures introduce complications like infections or internal bleeding.",
-     yt:""},
-    {id:2,name:"Interrogation System",icon:"🔎",status:"testing",
-     desc:"Multi-phase interrogation with psychological pressure, rapport building, and deception detection.\n\nNPCs have unique breaking points based on their backstory and current stress level.",
-     yt:""}
-  ],
-  nextId:10
-};
-function save(){ localStorage.setItem('rpmgr8',JSON.stringify(S)); }
+// ── Data ───────────────────────────────────────────────────────────────────
+var S = { thematics:[], mechanics:[], nextId:1 };
 
-// ── Navigation ─────────────────────────────────────────────────────────
+// ── Navigation ─────────────────────────────────────────────────────────────
 function showSec(id,btn){
   document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('active');});
   document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active');});
@@ -539,10 +603,9 @@ function showSec(id,btn){
   if(id==='mechanics') renderM();
 }
 
-// ── Thematics ─────────────────────────────────────────────────────────
+// ── Thematics ──────────────────────────────────────────────────────────────
 var curF='all';
 var SCOL={active:'#48c78e',voting:'#c9a84c',planned:'#b87fff',archived:'#666'};
-
 function filterT(f,btn){
   curF=f;
   document.querySelectorAll('.chip').forEach(function(c){c.classList.remove('on');});
@@ -584,25 +647,28 @@ function vote(id,choice){
   var t=S.thematics.filter(function(x){return x.id===id;})[0]; if(!t) return;
   if(t.voted===choice){t[choice]--;t.voted=null;}
   else{if(t.voted)t[t.voted]--;t[choice]++;t.voted=choice;}
-  save(); renderT();
+  renderT(); syncVote();
 }
+
 function addThematic(){
   var title=document.getElementById('tTitle').value.trim();
   if(!title){alert(tr('alertTitle'));return;}
   var tags=document.getElementById('tTags').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
-  S.thematics.unshift({id:S.nextId++,title,desc:document.getElementById('tDesc').value.trim(),
-    status:document.getElementById('tStatus').value,tags:tags,yes:0,no:0,voted:null});
-  save(); closeOv('addThematic');
+  S.thematics.unshift({id:S.nextId++,title,
+    desc:document.getElementById('tDesc').value.trim(),
+    status:document.getElementById('tStatus').value,
+    tags:tags,yes:0,no:0,voted:null});
+  closeOv('addThematic');
   ['tTitle','tDesc','tTags'].forEach(function(i){document.getElementById(i).value='';});
-  renderT();
+  renderT(); syncSave();
 }
 function delT(id){
   if(!confirm(tr('confirmT'))) return;
   S.thematics=S.thematics.filter(function(x){return x.id!==id;});
-  save(); renderT();
+  renderT(); syncSave();
 }
 
-// ── Mechanics ─────────────────────────────────────────────────────────
+// ── Mechanics ──────────────────────────────────────────────────────────────
 function renderM(){
   var g=document.getElementById('mGrid');
   if(!S.mechanics.length){
@@ -620,14 +686,13 @@ function renderM(){
       +'</div>';
   }).join('');
 }
-
 function openDetail(id){
   var m=S.mechanics.filter(function(x){return x.id===id;})[0]; if(!m) return;
   document.getElementById('dIcon').textContent=m.icon||'⚙';
   document.getElementById('dName').textContent=m.name;
   var s=document.getElementById('dStat'); s.textContent=mTr(m.status); s.className='mstat s-'+m.status;
   document.getElementById('dDesc').textContent=m.desc||tr('noDesc');
-  var yc=document.getElementById('dYt'), vid=ytId(m.yt);
+  var yc=document.getElementById('dYt'),vid=ytId(m.yt);
   if(vid){
     yc.innerHTML='<iframe src="https://www.youtube.com/embed/'+vid+'" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>';
   } else {
@@ -648,20 +713,19 @@ function addMechanic(){
     status:document.getElementById('mStatus').value,
     desc:document.getElementById('mDesc').value.trim(),
     yt:document.getElementById('mYt').value.trim()});
-  save(); closeOv('addMechanic');
+  closeOv('addMechanic');
   ['mName','mIcon','mDesc','mYt'].forEach(function(i){document.getElementById(i).value='';});
-  renderM();
+  renderM(); syncSave();
 }
 function delM(id){
   if(!confirm(tr('confirmM'))) return;
   S.mechanics=S.mechanics.filter(function(x){return x.id!==id;});
-  save(); renderM();
+  renderM(); syncSave();
 }
 
-// ── Boot ───────────────────────────────────────────────────────────────
+// ── Boot ───────────────────────────────────────────────────────────────────
 applyLang();
-renderT();
-renderM();
+syncLoad();
 </script>
 </body>
 </html>
