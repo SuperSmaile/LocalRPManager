@@ -11,7 +11,6 @@
 body{background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,serif;min-height:100vh;overflow-x:hidden;}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(139,47,201,.08),transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(201,168,76,.06),transparent 50%);pointer-events:none;z-index:0;}
 .noise{position:fixed;inset:0;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px;pointer-events:none;z-index:0;}
-/* Header */
 header{position:relative;z-index:10;text-align:center;padding:2.5rem 2rem 1.5rem;border-bottom:1px solid var(--border);}
 .ornament{font-size:.7rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:.6rem;opacity:.8;user-select:none;}
 h1{font-family:'Cinzel Decorative',serif;font-size:clamp(1.8rem,5vw,3.2rem);font-weight:700;background:linear-gradient(135deg,var(--accent),#fff8e7 50%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;}
@@ -20,11 +19,9 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(1.8rem,5vw,3.2rem);font
 .admin-badge.on{display:flex;}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-/* Lock button */
 #lockBtn{position:fixed;bottom:1.2rem;right:1.2rem;z-index:500;width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);color:var(--muted);cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;opacity:.12;transition:opacity .25s,border-color .25s,box-shadow .25s,color .25s;}
 #lockBtn:hover{opacity:.55;}
 #lockBtn.open{opacity:1;color:var(--accent);border-color:rgba(201,168,76,.5);box-shadow:0 0 16px rgba(201,168,76,.3);}
-/* Nav */
 .nav{position:sticky;top:0;z-index:100;display:flex;align-items:stretch;background:rgba(13,11,14,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
 .nav-tabs{display:flex;flex:1;}
 .tab{flex:1;min-width:145px;padding:.9rem 1.2rem;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s;}
@@ -35,14 +32,12 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(1.8rem,5vw,3.2rem);font
 .lb.on{color:var(--accent);border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.08);}
 .lb:hover:not(.on){color:var(--text);}
 .lsep{color:var(--border);font-size:.75rem;}
-/* Layout */
 main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:2.5rem 1.5rem;}
 .sec{display:none;}.sec.active{display:block;animation:fin .35s ease;}
 @keyframes fin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;}
 .sec-title{font-family:'Cinzel',serif;font-size:1.4rem;font-weight:600;color:var(--accent);}
 .sec-title small{display:block;font-family:'Crimson Pro',serif;font-size:.88rem;color:var(--muted);font-weight:400;margin-top:.12rem;}
-/* Buttons */
 .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.25rem;border-radius:3px;font-family:'Cinzel',serif;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;border:1px solid;}
 .btn-gold{background:var(--accent);color:#1a1000;border-color:var(--accent);font-weight:700;}
 .btn-gold:hover{background:#dbb85a;box-shadow:0 0 18px rgba(201,168,76,.3);}
@@ -52,25 +47,22 @@ main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:2.5rem 1
 .btn-red:hover{background:rgba(232,93,93,.1);}
 .admin-only{display:none!important;}
 body.admin .admin-only{display:inline-flex!important;}
-/* Modals */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(12px);z-index:1000;align-items:center;justify-content:center;padding:1rem;}
 .overlay.on{display:flex;animation:fin .2s ease;}
 .modal{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:2rem;width:100%;max-width:500px;box-shadow:0 40px 80px rgba(0,0,0,.7);}
 .modal h3{font-family:'Cinzel',serif;font-size:1.1rem;color:var(--accent);margin-bottom:1.4rem;letter-spacing:.05em;}
 .mfoot{display:flex;gap:.7rem;justify-content:flex-end;margin-top:1.4rem;}
-#adminModal .modal{max-width:380px;border-color:rgba(201,168,76,.25);box-shadow:0 0 50px rgba(201,168,76,.06),0 40px 80px rgba(0,0,0,.7);}
+#adminModal .modal{max-width:380px;border-color:rgba(201,168,76,.25);}
 .lock-big{text-align:center;font-size:3rem;margin-bottom:.5rem;}
 .admin-hint{text-align:center;color:var(--muted);font-style:italic;font-size:.88rem;line-height:1.6;margin-bottom:1.4rem;white-space:pre-line;}
-.err{margin-top:.6rem;padding:.5rem .8rem;background:rgba(232,93,93,.1);border:1px solid rgba(232,93,93,.3);border-radius:3px;color:var(--accent3);font-size:.86rem;text-align:center;display:none;}
-.err.on{display:block;}
+.err-box{margin-top:.6rem;padding:.5rem .8rem;background:rgba(232,93,93,.1);border:1px solid rgba(232,93,93,.3);border-radius:3px;color:var(--accent3);font-size:.86rem;text-align:center;display:none;}
+.err-box.on{display:block;}
 @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
-/* Form */
 .fg{margin-bottom:1.15rem;}
 label{display:block;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem;}
 input,textarea,select{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:3px;color:var(--text);font-family:'Crimson Pro',serif;font-size:1rem;padding:.6rem .85rem;outline:none;transition:border-color .18s;}
 input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(201,168,76,.1);}
 textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
-/* Mechanic detail */
 .mech-modal{max-width:680px;max-height:90vh;overflow-y:auto;}
 .mech-modal::-webkit-scrollbar{width:3px;}
 .mech-modal::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
@@ -82,12 +74,10 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
 .ytbox iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
 .ytph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;color:var(--muted);font-style:italic;font-size:.9rem;}
 .ytph svg{opacity:.2;}
-/* Filters */
 .filters{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.4rem;}
 .chip{padding:.28rem .9rem;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Crimson Pro',serif;font-size:.86rem;cursor:pointer;transition:all .18s;}
 .chip:hover{border-color:var(--accent);color:var(--accent);}
 .chip.on{background:rgba(201,168,76,.14);border-color:var(--accent);color:var(--accent);}
-/* Thematic cards */
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1.15rem;}
 .tcard{background:var(--card);border:1px solid var(--border);border-radius:5px;padding:1.3rem;transition:all .28s;position:relative;overflow:hidden;}
 .tcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ac,var(--accent)),transparent);opacity:.7;}
@@ -102,7 +92,6 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
 .cdesc{font-size:.92rem;color:var(--muted);line-height:1.55;margin-bottom:.85rem;}
 .ctags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.85rem;}
 .tag{padding:.12rem .5rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:3px;font-size:.74rem;color:var(--muted);}
-/* Vote */
 .vsec{border-top:1px solid var(--border);padding-top:.85rem;margin-top:.2rem;}
 .vrow{display:flex;justify-content:space-between;font-size:.76rem;color:var(--muted);margin-bottom:.25rem;}
 .vbar{height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;margin-bottom:.6rem;}
@@ -115,7 +104,6 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
 .vn{border-color:rgba(232,93,93,.35);color:var(--accent3);}.vn:hover,.vn.voted{background:rgba(232,93,93,.13);}
 .vtot{margin-left:auto;font-size:.76rem;color:var(--muted);}
 .cacts{margin-top:.65rem;}
-/* Mechanic cards */
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.15rem;}
 .mcard{background:var(--card);border:1px solid var(--border);border-radius:5px;cursor:pointer;transition:all .28s;overflow:hidden;position:relative;}
 .mcard::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(139,47,201,.04),transparent 55%);pointer-events:none;}
@@ -130,7 +118,6 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
 .mprev{font-size:.86rem;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .mfoot2{padding:.65rem 1.3rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:.74rem;color:var(--muted);background:rgba(0,0,0,.13);}
 .hint{display:flex;align-items:center;gap:.3rem;font-style:italic;}
-/* Empty */
 .empty{text-align:center;padding:4rem 2rem;color:var(--muted);grid-column:1/-1;}
 .empty .ei{font-size:2.6rem;margin-bottom:.8rem;opacity:.3;}
 .empty h3{font-family:'Cinzel',serif;font-size:1rem;color:var(--muted);margin-bottom:.38rem;}
@@ -142,7 +129,7 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
 <body>
 <div class="noise"></div>
 <header>
-  <div class="ornament" id="xOr">⸻ Chronicle Board ⸻</div>
+  <div class="ornament" id="xOr">&#8901;</div>
   <h1>RP Manager</h1>
   <p class="sub" id="xSub">Manage your roleplay world with grace</p>
   <div class="admin-badge" id="xBadge"><div class="dot"></div><span id="xBT">Admin Mode</span></div>
@@ -159,7 +146,6 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
   </div>
 </nav>
 <main>
-  <!-- THEMATICS -->
   <div id="thematics" class="sec active">
     <div class="sec-head">
       <div class="sec-title"><span id="xTT">Roleplay Thematics</span><small id="xTS">Vote on what comes next</small></div>
@@ -174,7 +160,6 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
     </div>
     <div class="tgrid" id="tGrid"></div>
   </div>
-  <!-- MECHANICS -->
   <div id="mechanics" class="sec">
     <div class="sec-head">
       <div class="sec-title"><span id="xMT">WIP Mechanics</span><small id="xMS">Work-in-progress game systems</small></div>
@@ -188,21 +173,19 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
 <div class="overlay" id="adminModal">
   <div class="modal">
     <div class="lock-big" id="xLI">&#128274;</div>
-    <p class="admin-hint" id="xAH"></p>
+    <p class="admin-hint" id="xAH">Loading...</p>
     <div class="fg">
       <label id="xPL">Passphrase</label>
-      <input type="password" id="passInput" autocomplete="new-password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"
-             onkeydown="if(event.key==='Enter'){event.preventDefault();doSubmit();}">
+      <input type="password" id="passInput" autocomplete="off">
     </div>
     <div class="fg" id="confirmWrap" style="display:none">
       <label id="xCL">Confirm passphrase</label>
-      <input type="password" id="passConfirm" autocomplete="new-password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"
-             onkeydown="if(event.key==='Enter'){event.preventDefault();doSubmit();}">
+      <input type="password" id="passConfirm" autocomplete="off">
     </div>
-    <div class="err" id="xErr"></div>
+    <div class="err-box" id="xErr"></div>
     <div class="mfoot">
-      <button class="btn btn-ghost" onclick="closeOv('admin')" id="xAC">Cancel</button>
-      <button class="btn btn-gold" onclick="doSubmit()" id="xAS">Unlock</button>
+      <button class="btn btn-ghost" id="xAC" onclick="closeOv('admin')">Cancel</button>
+      <button class="btn btn-gold" id="xAS" onclick="doSubmit()">Unlock</button>
     </div>
   </div>
 </div>
@@ -269,120 +252,148 @@ textarea{resize:vertical;min-height:95px;}select option{background:var(--bg3);}
 <button id="lockBtn" onclick="handleLock()">&#128274;</button>
 
 <script>
-// ── i18n ──────────────────────────────────────────────────────
-const L = {
-en:{
-  xOr:"⸻ Chronicle Board ⸻", xSub:"Manage your roleplay world with grace", xBT:"Admin Mode",
-  tabT:"⚔ Thematics & Votes", tabM:"⚙ WIP Mechanics",
-  xTT:"Roleplay Thematics", xTS:"Vote on what comes next",
-  xMT:"WIP Mechanics", xMS:"Work-in-progress game systems",
-  xBAT:"+ Add Thematic", xBAM:"+ Add Mechanic",
-  xfA:"All", xfAc:"Active", xfV:"Voting", xfP:"Planned", xfAr:"Archived",
-  xPL:"Passphrase", xCL:"Confirm passphrase", xAC:"Cancel",
-  hint_setup:"No admin password set yet.\nCreate one now — stored only in your browser, never in the HTML.",
-  hint_login:"Enter your passphrase to unlock admin controls.",
-  submit_setup:"Set Password", submit_login:"Unlock",
-  li_setup:"🔑", li_login:"🔐",
-  errWrong:"Wrong passphrase. Try again.", errMismatch:"Passwords don't match.", errShort:"Minimum 6 characters.",
-  xATH:"✦ New Thematic", xLTi:"Title", xLDe:"Description", xLSt:"Status", xLTa:"Tags (comma separated)",
-  oV:"Voting", oP:"Planned", oAc:"Active", oAr:"Archived", xTC:"Cancel", xTCr:"Create",
-  xAMH:"⚙ New Mechanic", xLMN:"Name", xLMI:"Icon / Emoji", xLMS:"Status", xLMD:"Description", xLMY:"YouTube URL (optional)",
-  oMT:"Testing", oMD:"Done", xMC:"Cancel", xMCr:"Create", xDC:"Close",
-  sActive:"Active", sVoting:"Voting", sPlanned:"Planned", sArchived:"Archived",
-  sTesting:"Testing", sDone:"Done",
-  vY:"Yes", vN:"No", votes:"votes", vote1:"vote",
-  removeBtn:"✕ Remove", clickHint:"Click to expand", noVideo:"No video provided",
-  emptyT:"No thematics", emptyTS:"Add your first thematic to get started",
-  emptyM:"No mechanics", emptyMS:"Add your first WIP mechanic",
-  noDesc:"No description provided.",
-  confirmT:"Remove this thematic?", confirmM:"Remove this mechanic?",
-  alertTitle:"Please enter a title", alertName:"Please enter a name",
-},
-ru:{
-  xOr:"⸻ Доска Хроник ⸻", xSub:"Управляй своим миром ролевых игр", xBT:"Режим Адм.",
-  tabT:"⚔ Тематики и Голоса", tabM:"⚙ Механики (WIP)",
-  xTT:"Тематики РП", xTS:"Голосуй за следующую",
-  xMT:"Механики в разработке", xMS:"Игровые системы в процессе создания",
-  xBAT:"+ Добавить тематику", xBAM:"+ Добавить механику",
-  xfA:"Все", xfAc:"Активные", xfV:"Голосование", xfP:"Планируются", xfAr:"Архив",
-  xPL:"Пароль", xCL:"Подтвердить пароль", xAC:"Отмена",
-  hint_setup:"Пароль администратора ещё не задан.\nСоздай его сейчас — хранится только в браузере, не в HTML.",
-  hint_login:"Введи секретную фразу, чтобы войти.",
-  submit_setup:"Задать пароль", submit_login:"Войти",
-  li_setup:"🔑", li_login:"🔐",
-  errWrong:"Неверная фраза. Попробуй снова.", errMismatch:"Пароли не совпадают.", errShort:"Минимум 6 символов.",
-  xATH:"✦ Новая тематика", xLTi:"Название", xLDe:"Описание", xLSt:"Статус", xLTa:"Теги (через запятую)",
-  oV:"Голосование", oP:"Запланировано", oAc:"Активно", oAr:"В архиве", xTC:"Отмена", xTCr:"Создать",
-  xAMH:"⚙ Новая механика", xLMN:"Название", xLMI:"Иконка / Эмодзи", xLMS:"Статус", xLMD:"Описание", xLMY:"Ссылка YouTube (необязательно)",
-  oMT:"Тестирование", oMD:"Готово", xMC:"Отмена", xMCr:"Создать", xDC:"Закрыть",
-  sActive:"Активно", sVoting:"Голосование", sPlanned:"Запланировано", sArchived:"В архиве",
-  sTesting:"Тестирование", sDone:"Готово",
-  vY:"Да", vN:"Нет", votes:"голосов", vote1:"голос",
-  removeBtn:"✕ Удалить", clickHint:"Нажми для подробностей", noVideo:"Видео не добавлено",
-  emptyT:"Тематики не найдены", emptyTS:"Добавь первую тематику",
-  emptyM:"Механик ещё нет", emptyMS:"Добавь первую механику выше",
-  noDesc:"Описание не добавлено.",
-  confirmT:"Удалить эту тематику?", confirmM:"Удалить эту механику?",
-  alertTitle:"Введи название", alertName:"Введи название",
-}};
+// ── Pure-JS hash (djb2 variant, works everywhere incl. file://) ─────────────
+// Falls back to this if crypto.subtle unavailable (file://, old browsers)
+function djb2(str) {
+  var h = 5381;
+  for (var i = 0; i < str.length; i++) {
+    h = ((h << 5) + h) ^ str.charCodeAt(i);
+    h = h >>> 0; // keep unsigned 32-bit
+  }
+  return h.toString(16).padStart(8, '0');
+}
 
-let lang = localStorage.getItem('rp_lang') || 'en';
-const tr = k => L[lang]?.[k] ?? L.en?.[k] ?? k;
+// Try crypto.subtle first, fall back to djb2
+async function hashPass(str) {
+  try {
+    if (window.crypto && crypto.subtle) {
+      var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+    }
+  } catch(e) {}
+  // fallback
+  return 'fb_' + djb2(str + 'rpmgr_salt_91x');
+}
 
-const TIDS = [
-  'xOr','xSub','xBT','tabT','tabM','xTT','xTS','xMT','xMS',
-  'xBAT','xBAM','xfA','xfAc','xfV','xfP','xfAr',
-  'xPL','xCL','xAC',
+// ── i18n ────────────────────────────────────────────────────────────────────
+var L = {
+  en: {
+    xOr:"⸻ Chronicle Board ⸻", xSub:"Manage your roleplay world with grace", xBT:"Admin Mode",
+    tabT:"⚔ Thematics & Votes", tabM:"⚙ WIP Mechanics",
+    xTT:"Roleplay Thematics", xTS:"Vote on what comes next",
+    xMT:"WIP Mechanics", xMS:"Work-in-progress game systems",
+    xBAT:"+ Add Thematic", xBAM:"+ Add Mechanic",
+    xfA:"All", xfAc:"Active", xfV:"Voting", xfP:"Planned", xfAr:"Archived",
+    xPL:"Passphrase", xCL:"Confirm passphrase", xAC:"Cancel",
+    hint_setup:"No admin password set yet.\nType a passphrase and confirm it to create one.\nIt will be stored only in your browser — never in the HTML.",
+    hint_login:"Enter your passphrase to unlock admin controls.",
+    sub_setup:"Set Password", sub_login:"Unlock",
+    li_setup:"🔑", li_login:"🔐",
+    errWrong:"Wrong passphrase.", errMismatch:"Passwords do not match.", errShort:"Minimum 6 characters.",
+    xATH:"✦ New Thematic", xLTi:"Title", xLDe:"Description", xLSt:"Status", xLTa:"Tags (comma separated)",
+    oV:"Voting", oP:"Planned", oAc:"Active", oAr:"Archived", xTC:"Cancel", xTCr:"Create",
+    xAMH:"⚙ New Mechanic", xLMN:"Name", xLMI:"Icon / Emoji", xLMS:"Status", xLMD:"Description", xLMY:"YouTube URL (optional)",
+    oMT:"Testing", oMD:"Done", xMC:"Cancel", xMCr:"Create", xDC:"Close",
+    sActive:"Active", sVoting:"Voting", sPlanned:"Planned", sArchived:"Archived",
+    sTesting:"Testing", sDone:"Done",
+    vY:"Yes", vN:"No", votes:"votes", vote1:"vote",
+    removeBtn:"✕ Remove", clickHint:"Click to expand", noVideo:"No video provided",
+    emptyT:"No thematics", emptyTS:"Add your first thematic to get started",
+    emptyM:"No mechanics", emptyMS:"Add your first WIP mechanic",
+    noDesc:"No description provided.",
+    confirmT:"Remove this thematic?", confirmM:"Remove this mechanic?",
+    alertTitle:"Please enter a title", alertName:"Please enter a name"
+  },
+  ru: {
+    xOr:"⸻ Доска Хроник ⸻", xSub:"Управляй своим миром ролевых игр", xBT:"Режим Адм.",
+    tabT:"⚔ Тематики и Голоса", tabM:"⚙ Механики (WIP)",
+    xTT:"Тематики РП", xTS:"Голосуй за следующую",
+    xMT:"Механики в разработке", xMS:"Игровые системы в процессе создания",
+    xBAT:"+ Добавить тематику", xBAM:"+ Добавить механику",
+    xfA:"Все", xfAc:"Активные", xfV:"Голосование", xfP:"Планируются", xfAr:"Архив",
+    xPL:"Пароль", xCL:"Подтвердить пароль", xAC:"Отмена",
+    hint_setup:"Пароль ещё не задан.\nВведи фразу и подтверди — она сохранится только в твоём браузере, не в HTML.",
+    hint_login:"Введи секретную фразу, чтобы войти.",
+    sub_setup:"Задать пароль", sub_login:"Войти",
+    li_setup:"🔑", li_login:"🔐",
+    errWrong:"Неверная фраза.", errMismatch:"Пароли не совпадают.", errShort:"Минимум 6 символов.",
+    xATH:"✦ Новая тематика", xLTi:"Название", xLDe:"Описание", xLSt:"Статус", xLTa:"Теги (через запятую)",
+    oV:"Голосование", oP:"Запланировано", oAc:"Активно", oAr:"В архиве", xTC:"Отмена", xTCr:"Создать",
+    xAMH:"⚙ Новая механика", xLMN:"Название", xLMI:"Иконка / Эмодзи", xLMS:"Статус", xLMD:"Описание", xLMY:"Ссылка YouTube (необязательно)",
+    oMT:"Тестирование", oMD:"Готово", xMC:"Отмена", xMCr:"Создать", xDC:"Закрыть",
+    sActive:"Активно", sVoting:"Голосование", sPlanned:"Запланировано", sArchived:"В архиве",
+    sTesting:"Тестирование", sDone:"Готово",
+    vY:"Да", vN:"Нет", votes:"голосов", vote1:"голос",
+    removeBtn:"✕ Удалить", clickHint:"Нажми для подробностей", noVideo:"Видео не добавлено",
+    emptyT:"Тематики не найдены", emptyTS:"Добавь первую тематику",
+    emptyM:"Механик ещё нет", emptyMS:"Добавь первую механику выше",
+    noDesc:"Описание не добавлено.",
+    confirmT:"Удалить эту тематику?", confirmM:"Удалить эту механику?",
+    alertTitle:"Введи название", alertName:"Введи название"
+  }
+};
+
+var lang = localStorage.getItem('rp_lang') || 'en';
+function tr(k) { return (L[lang] && L[lang][k] !== undefined) ? L[lang][k] : (L.en[k] || k); }
+
+var TIDS = ['xOr','xSub','xBT','tabT','tabM','xTT','xTS','xMT','xMS',
+  'xBAT','xBAM','xfA','xfAc','xfV','xfP','xfAr','xPL','xCL','xAC',
   'xATH','xLTi','xLDe','xLSt','xLTa','oV','oP','oAc','oAr','xTC','xTCr',
-  'xAMH','xLMN','xLMI','xLMS','xLMD','xLMY','oMT','oMD','xMC','xMCr','xDC'
-];
+  'xAMH','xLMN','xLMI','xLMS','xLMD','xLMY','oMT','oMD','xMC','xMCr','xDC'];
 
 function applyLang() {
-  TIDS.forEach(id => { const el = document.getElementById(id); if(el) el.textContent = tr(id); });
+  TIDS.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = tr(id);
+  });
   document.getElementById('lEN').classList.toggle('on', lang === 'en');
   document.getElementById('lRU').classList.toggle('on', lang === 'ru');
 }
-function setLang(l) { lang = l; localStorage.setItem('rp_lang', l); applyLang(); renderT(); renderM(); }
 
-// ── SHA-256 ───────────────────────────────────────────
-async function sha256(txt) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+function setLang(l) {
+  lang = l;
+  localStorage.setItem('rp_lang', l);
+  applyLang();
+  renderT();
+  renderM();
 }
 
-// ── Admin ─────────────────────────────────────────────
-// Password hash lives ONLY in localStorage.
-// Nothing is hardcoded or written into this file.
-let isAdmin = false;
-let adminMode = 'login';
+// ── Admin ─────────────────────────────────────────────────────────────────
+var isAdmin = false;
 
-function hasPass() { return !!localStorage.getItem('rp_admin_hash'); }
+function hasPass() {
+  return !!localStorage.getItem('rp_admin_hash');
+}
+
+function showErr(msg) {
+  var el = document.getElementById('xErr');
+  el.textContent = msg;
+  el.classList.add('on');
+}
+
+function clearErr() {
+  var el = document.getElementById('xErr');
+  el.textContent = '';
+  el.classList.remove('on');
+}
 
 function prepModal() {
-  adminMode = hasPass() ? 'login' : 'setup';
-  document.getElementById('xLI').textContent  = tr(adminMode === 'setup' ? 'li_setup' : 'li_login');
-  document.getElementById('xAH').textContent  = tr(adminMode === 'setup' ? 'hint_setup' : 'hint_login');
-  document.getElementById('xAS').textContent  = tr(adminMode === 'setup' ? 'submit_setup' : 'submit_login');
-  document.getElementById('xErr').className   = 'err';
-  document.getElementById('xErr').textContent = '';
-  document.getElementById('passInput').value  = '';
-  const cw = document.getElementById('confirmWrap');
-  if (adminMode === 'setup') {
-    cw.style.display = 'block';
-    document.getElementById('passConfirm').value = '';
-    document.getElementById('xCL').textContent = tr('xCL');
-  } else {
-    cw.style.display = 'none';
-  }
+  var setup = !hasPass();
+  document.getElementById('xLI').textContent = tr(setup ? 'li_setup' : 'li_login');
+  document.getElementById('xAH').textContent = tr(setup ? 'hint_setup' : 'hint_login');
+  document.getElementById('xAS').textContent = tr(setup ? 'sub_setup' : 'sub_login');
+  document.getElementById('passInput').value = '';
+  document.getElementById('confirmWrap').style.display = setup ? 'block' : 'none';
+  if (setup) document.getElementById('passConfirm').value = '';
+  clearErr();
 }
 
 function handleLock() {
   if (isAdmin) {
-    // instant logout
     isAdmin = false;
     document.body.classList.remove('admin');
     document.getElementById('xBadge').classList.remove('on');
-    const lb = document.getElementById('lockBtn');
+    var lb = document.getElementById('lockBtn');
     lb.classList.remove('open');
     lb.textContent = '🔒';
     renderT(); renderM();
@@ -390,237 +401,254 @@ function handleLock() {
   }
   prepModal();
   openOv('admin');
-  setTimeout(() => document.getElementById('passInput').focus(), 180);
+  setTimeout(function() { document.getElementById('passInput').focus(); }, 180);
 }
 
-async function doSubmit() {
-  const pass  = document.getElementById('passInput').value;
-  const errEl = document.getElementById('xErr');
-  errEl.className = 'err';
+function doSubmit() {
+  var pass = document.getElementById('passInput').value;
+  clearErr();
 
-  if (adminMode === 'setup') {
-    if (pass.length < 6) {
-      errEl.textContent = tr('errShort'); errEl.className = 'err on'; return;
-    }
-    const conf = document.getElementById('passConfirm').value;
+  if (pass.length < 6) {
+    showErr(tr('errShort'));
+    return;
+  }
+
+  if (!hasPass()) {
+    // SETUP MODE — confirm the password
+    var conf = document.getElementById('passConfirm').value;
     if (pass !== conf) {
-      errEl.textContent = tr('errMismatch'); errEl.className = 'err on'; return;
+      showErr(tr('errMismatch'));
+      return;
     }
-    localStorage.setItem('rp_admin_hash', await sha256(pass));
-    doLogin();
-  } else {
-    const h = await sha256(pass);
-    if (h === localStorage.getItem('rp_admin_hash')) {
+    // Hash and save, then login
+    hashPass(pass).then(function(h) {
+      localStorage.setItem('rp_admin_hash', h);
       doLogin();
-    } else {
-      errEl.textContent = tr('errWrong'); errEl.className = 'err on';
-      document.getElementById('passInput').value = '';
-      document.getElementById('passInput').focus();
-      const m = document.querySelector('#adminModal .modal');
-      m.style.animation = 'none'; void m.offsetHeight; m.style.animation = 'shake .38s ease';
-    }
+    });
+  } else {
+    // LOGIN MODE — compare hashes
+    hashPass(pass).then(function(h) {
+      if (h === localStorage.getItem('rp_admin_hash')) {
+        doLogin();
+      } else {
+        showErr(tr('errWrong'));
+        document.getElementById('passInput').value = '';
+        document.getElementById('passInput').focus();
+        var m = document.querySelector('#adminModal .modal');
+        m.style.animation = 'none';
+        void m.offsetHeight;
+        m.style.animation = 'shake .38s ease';
+      }
+    });
   }
 }
+
+// Allow Enter key in password fields
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('adminModal').classList.contains('on')) {
+    e.preventDefault();
+    doSubmit();
+  }
+});
 
 function doLogin() {
   isAdmin = true;
   document.body.classList.add('admin');
   document.getElementById('xBadge').classList.add('on');
-  document.getElementById('xBT').textContent = tr('xBT');
-  const lb = document.getElementById('lockBtn');
-  lb.classList.add('open'); lb.textContent = '🔓';
+  var lb = document.getElementById('lockBtn');
+  lb.classList.add('open');
+  lb.textContent = '🔓';
   closeOv('admin');
   renderT(); renderM();
 }
 
-// ── Overlays ──────────────────────────────────────────
+// ── Overlays ──────────────────────────────────────────────────────────────
 function openOv(n)  { document.getElementById(n + 'Modal').classList.add('on'); }
 function closeOv(n) { document.getElementById(n + 'Modal').classList.remove('on'); }
-document.querySelectorAll('.overlay').forEach(o => {
-  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('on'); });
+
+document.querySelectorAll('.overlay').forEach(function(o) {
+  o.addEventListener('click', function(e) {
+    if (e.target === o) o.classList.remove('on');
+  });
 });
 
-// ── Data ──────────────────────────────────────────────
-let S = JSON.parse(localStorage.getItem('rpmgr6') || 'null') || {
+// ── Data ──────────────────────────────────────────────────────────────────
+var S = JSON.parse(localStorage.getItem('rpmgr7') || 'null') || {
   thematics: [
-    {id:1, title:"Sword & Sorcery", status:"active",
+    {id:1,title:"Sword & Sorcery",status:"active",
      desc:"Classic high fantasy with ancient magic, legendary weapons, and epic quests across mystical realms.",
-     tags:["fantasy","magic","combat"], yes:12, no:2, voted:null},
-    {id:2, title:"Cyberpunk City", status:"voting",
+     tags:["fantasy","magic","combat"],yes:12,no:2,voted:null},
+    {id:2,title:"Cyberpunk City",status:"voting",
      desc:"A rain-drenched neon metropolis where corporations rule, hackers rebel, and augmented humans struggle with identity.",
-     tags:["sci-fi","dystopia","tech"], yes:8, no:5, voted:null},
-    {id:3, title:"Cosmic Horror", status:"planned",
+     tags:["sci-fi","dystopia","tech"],yes:8,no:5,voted:null},
+    {id:3,title:"Cosmic Horror",status:"planned",
      desc:"Lovecraftian mysteries, sanity mechanics, and existential dread as investigators unravel impossible truths.",
-     tags:["horror","mystery","eldritch"], yes:15, no:1, voted:null}
+     tags:["horror","mystery","eldritch"],yes:15,no:1,voted:null}
   ],
   mechanics: [
-    {id:1, name:"Surgery Mechanic", icon:"🩺", status:"wip",
+    {id:1,name:"Surgery Mechanic",icon:"🩺",status:"wip",
      desc:"A detailed medical roleplay system involving risk assessment, skill checks, complications, and recovery timelines.\n\nPlayers can perform surgeries with different specialization levels. Critical failures introduce complications like infections or internal bleeding.",
      yt:""},
-    {id:2, name:"Interrogation System", icon:"🔎", status:"testing",
+    {id:2,name:"Interrogation System",icon:"🔎",status:"testing",
      desc:"Multi-phase interrogation with psychological pressure, rapport building, and deception detection.\n\nNPCs have unique breaking points based on their backstory and current stress level.",
      yt:""}
   ],
   nextId: 10
 };
-const save = () => localStorage.setItem('rpmgr6', JSON.stringify(S));
 
-// ── Navigation ────────────────────────────────────────
+function save() { localStorage.setItem('rpmgr7', JSON.stringify(S)); }
+
+// ── Navigation ─────────────────────────────────────────────────────────────
 function showSec(id, btn) {
-  document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.sec').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(b){ b.classList.remove('active'); });
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
   if (id === 'thematics') renderT();
   if (id === 'mechanics') renderM();
 }
 
-// ── Thematics ─────────────────────────────────────────
-let curF = 'all';
-const SCOL = {active:'#48c78e', voting:'#c9a84c', planned:'#b87fff', archived:'#666'};
+// ── Thematics ─────────────────────────────────────────────────────────────
+var curF = 'all';
+var SCOL = {active:'#48c78e', voting:'#c9a84c', planned:'#b87fff', archived:'#666'};
 
 function filterT(f, btn) {
   curF = f;
-  document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  document.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('on'); });
   btn.classList.add('on');
   renderT();
 }
 
-function sTr(s) { return {active:tr('sActive'),voting:tr('sVoting'),planned:tr('sPlanned'),archived:tr('sArchived')}[s] || s; }
-function mTr(s) { return {wip:'WIP', testing:tr('sTesting'), done:tr('sDone')}[s] || s; }
+function sTr(s) {
+  var map = {active:'sActive', voting:'sVoting', planned:'sPlanned', archived:'sArchived'};
+  return tr(map[s] || s);
+}
+function mTr(s) {
+  if (s === 'wip') return 'WIP';
+  if (s === 'testing') return tr('sTesting');
+  if (s === 'done') return tr('sDone');
+  return s;
+}
 
 function renderT() {
-  const g = document.getElementById('tGrid');
-  const items = curF === 'all' ? S.thematics : S.thematics.filter(x => x.status === curF);
+  var g = document.getElementById('tGrid');
+  var items = curF === 'all' ? S.thematics : S.thematics.filter(function(x){ return x.status === curF; });
+
   if (!items.length) {
-    g.innerHTML = `<div class="empty"><div class="ei">⚔</div><h3>${tr('emptyT')}</h3><p>${tr('emptyTS')}</p></div>`;
+    g.innerHTML = '<div class="empty"><div class="ei">&#9876;</div><h3>' + tr('emptyT') + '</h3><p>' + tr('emptyTS') + '</p></div>';
     return;
   }
-  g.innerHTML = items.map(t => {
-    const tot = t.yes + t.no;
-    const yp  = tot ? Math.round(t.yes / tot * 100) : 50;
-    const np  = 100 - yp;
-    const vw  = tot === 1 ? tr('vote1') : tr('votes');
-    const tags = t.tags.map(g => `<span class="tag">${g}</span>`).join('');
-    const del  = isAdmin
-      ? `<div class="cacts"><button class="btn btn-red" onclick="delT(${t.id})">${tr('removeBtn')}</button></div>`
+
+  g.innerHTML = items.map(function(t) {
+    var tot = t.yes + t.no;
+    var yp  = tot ? Math.round(t.yes / tot * 100) : 50;
+    var np  = 100 - yp;
+    var vw  = tot === 1 ? tr('vote1') : tr('votes');
+    var tags = t.tags.map(function(g){ return '<span class="tag">' + g + '</span>'; }).join('');
+    var del  = isAdmin
+      ? '<div class="cacts"><button class="btn btn-red" onclick="delT(' + t.id + ')">' + tr('removeBtn') + '</button></div>'
       : '';
-    return `<div class="tcard" style="--ac:${SCOL[t.status]||'#888'}">
-      <div class="ctop">
-        <div class="ctitle">${t.title}</div>
-        <span class="badge b-${t.status}">${sTr(t.status)}</span>
-      </div>
-      <div class="cdesc">${t.desc}</div>
-      ${tags ? `<div class="ctags">${tags}</div>` : ''}
-      <div class="vsec">
-        <div class="vrow"><span>👍 ${tr('vY')} (${t.yes})</span><span>${yp}%</span></div>
-        <div class="vbar"><div class="vfill fy" style="width:${yp}%"></div></div>
-        <div class="vrow"><span>👎 ${tr('vN')} (${t.no})</span><span>${np}%</span></div>
-        <div class="vbar"><div class="vfill fn" style="width:${np}%"></div></div>
-        <div class="vbtns">
-          <button class="vbtn vy ${t.voted==='yes'?'voted':''}" onclick="vote(${t.id},'yes')">👍 ${tr('vY')}</button>
-          <button class="vbtn vn ${t.voted==='no' ?'voted':''}" onclick="vote(${t.id},'no')">👎 ${tr('vN')}</button>
-          <span class="vtot">${tot} ${vw}</span>
-        </div>
-      </div>${del}
-    </div>`;
+    return '<div class="tcard" style="--ac:' + (SCOL[t.status]||'#888') + '">'
+      + '<div class="ctop"><div class="ctitle">' + t.title + '</div>'
+      + '<span class="badge b-' + t.status + '">' + sTr(t.status) + '</span></div>'
+      + '<div class="cdesc">' + t.desc + '</div>'
+      + (tags ? '<div class="ctags">' + tags + '</div>' : '')
+      + '<div class="vsec">'
+      + '<div class="vrow"><span>&#128077; ' + tr('vY') + ' (' + t.yes + ')</span><span>' + yp + '%</span></div>'
+      + '<div class="vbar"><div class="vfill fy" style="width:' + yp + '%"></div></div>'
+      + '<div class="vrow"><span>&#128078; ' + tr('vN') + ' (' + t.no + ')</span><span>' + np + '%</span></div>'
+      + '<div class="vbar"><div class="vfill fn" style="width:' + np + '%"></div></div>'
+      + '<div class="vbtns">'
+      + '<button class="vbtn vy' + (t.voted==='yes' ? ' voted' : '') + '" onclick="vote(' + t.id + ',\'yes\')">&#128077; ' + tr('vY') + '</button>'
+      + '<button class="vbtn vn' + (t.voted==='no'  ? ' voted' : '') + '" onclick="vote(' + t.id + ',\'no\')">&#128078; ' + tr('vN') + '</button>'
+      + '<span class="vtot">' + tot + ' ' + vw + '</span>'
+      + '</div></div>' + del + '</div>';
   }).join('');
 }
 
 function vote(id, choice) {
-  const t = S.thematics.find(x => x.id === id); if (!t) return;
+  var t = S.thematics.filter(function(x){ return x.id === id; })[0];
+  if (!t) return;
   if (t.voted === choice) { t[choice]--; t.voted = null; }
   else { if (t.voted) t[t.voted]--; t[choice]++; t.voted = choice; }
   save(); renderT();
 }
 
 function addThematic() {
-  const title = document.getElementById('tTitle').value.trim();
+  var title = document.getElementById('tTitle').value.trim();
   if (!title) { alert(tr('alertTitle')); return; }
-  const tags = document.getElementById('tTags').value.split(',').map(s => s.trim()).filter(Boolean);
+  var tagsRaw = document.getElementById('tTags').value;
+  var tags = tagsRaw.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
   S.thematics.unshift({
     id: S.nextId++, title,
     desc:   document.getElementById('tDesc').value.trim(),
     status: document.getElementById('tStatus').value,
-    tags, yes: 0, no: 0, voted: null
+    tags: tags, yes: 0, no: 0, voted: null
   });
   save(); closeOv('addThematic');
-  ['tTitle','tDesc','tTags'].forEach(i => document.getElementById(i).value = '');
+  ['tTitle','tDesc','tTags'].forEach(function(i){ document.getElementById(i).value = ''; });
   renderT();
 }
 
 function delT(id) {
   if (!confirm(tr('confirmT'))) return;
-  S.thematics = S.thematics.filter(x => x.id !== id);
+  S.thematics = S.thematics.filter(function(x){ return x.id !== id; });
   save(); renderT();
 }
 
-// ── Mechanics ─────────────────────────────────────────
+// ── Mechanics ─────────────────────────────────────────────────────────────
 function renderM() {
-  const g = document.getElementById('mGrid');
+  var g = document.getElementById('mGrid');
   if (!S.mechanics.length) {
-    g.innerHTML = `<div class="empty"><div class="ei">⚙</div><h3>${tr('emptyM')}</h3><p>${tr('emptyMS')}</p></div>`;
+    g.innerHTML = '<div class="empty"><div class="ei">&#9881;</div><h3>' + tr('emptyM') + '</h3><p>' + tr('emptyMS') + '</p></div>';
     return;
   }
-  g.innerHTML = S.mechanics.map(m => {
-    const del = isAdmin
-      ? `<button class="btn btn-red" style="font-size:.6rem;padding:.2rem .5rem"
-           onclick="event.stopPropagation();delM(${m.id})">✕</button>`
+  g.innerHTML = S.mechanics.map(function(m) {
+    var del = isAdmin
+      ? '<button class="btn btn-red" style="font-size:.6rem;padding:.2rem .5rem" onclick="event.stopPropagation();delM(' + m.id + ')">&#10005;</button>'
       : '';
-    return `<div class="mcard" onclick="openDetail(${m.id})">
-      <div class="minner">
-        <div class="micon">${m.icon || '⚙'}</div>
-        <div class="mname">${m.name}</div>
-        <span class="mstat s-${m.status}">${mTr(m.status)}</span>
-        <div class="mprev">${m.desc || tr('noDesc')}</div>
-      </div>
-      <div class="mfoot2">
-        <span class="hint">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="12"/>
-            <line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>${tr('clickHint')}
-        </span>${del}
-      </div>
-    </div>`;
+    return '<div class="mcard" onclick="openDetail(' + m.id + ')">'
+      + '<div class="minner">'
+      + '<div class="micon">' + (m.icon || '&#9881;') + '</div>'
+      + '<div class="mname">' + m.name + '</div>'
+      + '<span class="mstat s-' + m.status + '">' + mTr(m.status) + '</span>'
+      + '<div class="mprev">' + (m.desc || tr('noDesc')) + '</div>'
+      + '</div>'
+      + '<div class="mfoot2">'
+      + '<span class="hint"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'
+      + '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/>'
+      + '<line x1="12" y1="16" x2="12.01" y2="16"/></svg>' + tr('clickHint') + '</span>'
+      + del + '</div></div>';
   }).join('');
 }
 
 function openDetail(id) {
-  const m = S.mechanics.find(x => x.id === id); if (!m) return;
+  var m = S.mechanics.filter(function(x){ return x.id === id; })[0];
+  if (!m) return;
   document.getElementById('dIcon').textContent = m.icon || '⚙';
   document.getElementById('dName').textContent = m.name;
-  const s = document.getElementById('dStat');
-  s.textContent = mTr(m.status); s.className = 'mstat s-' + m.status;
+  var s = document.getElementById('dStat');
+  s.textContent = mTr(m.status);
+  s.className = 'mstat s-' + m.status;
   document.getElementById('dDesc').textContent = m.desc || tr('noDesc');
-  const yc = document.getElementById('dYt'), vid = ytId(m.yt);
+  var yc = document.getElementById('dYt');
+  var vid = ytId(m.yt);
   if (vid) {
-    yc.innerHTML = `<iframe src="https://www.youtube.com/embed/${vid}"
-      allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
-      allowfullscreen></iframe>`;
+    yc.innerHTML = '<iframe src="https://www.youtube.com/embed/' + vid + '" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>';
   } else {
-    yc.innerHTML = `<div class="ytph">
-      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-        <path d="M22.54 6.42a2.78 2.78 0 00-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46
-          A2.78 2.78 0 001.46 6.42 29 29 0 001 11.75a29 29 0 00.46 5.33
-          A2.78 2.78 0 003.4 19.1C5.12 19.56 12 19.56 12 19.56s6.88 0 8.6-.46
-          a2.78 2.78 0 001.94-1.96 29 29 0 00.46-5.29 29 29 0 00-.46-5.33z"/>
-        <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
-      </svg>${tr('noVideo')}
-    </div>`;
+    yc.innerHTML = '<div class="ytph"><svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46A2.78 2.78 0 001.46 6.42 29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19.1C5.12 19.56 12 19.56 12 19.56s6.88 0 8.6-.46a2.78 2.78 0 001.94-1.96 29 29 0 00.46-5.29 29 29 0 00-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>' + tr('noVideo') + '</div>';
   }
   openOv('mechanicDetail');
 }
 
 function ytId(url) {
   if (!url) return null;
-  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+  var m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
   return m ? m[1] : null;
 }
 
 function addMechanic() {
-  const name = document.getElementById('mName').value.trim();
+  var name = document.getElementById('mName').value.trim();
   if (!name) { alert(tr('alertName')); return; }
   S.mechanics.unshift({
     id: S.nextId++, name,
@@ -630,17 +658,17 @@ function addMechanic() {
     yt:     document.getElementById('mYt').value.trim()
   });
   save(); closeOv('addMechanic');
-  ['mName','mIcon','mDesc','mYt'].forEach(i => document.getElementById(i).value = '');
+  ['mName','mIcon','mDesc','mYt'].forEach(function(i){ document.getElementById(i).value = ''; });
   renderM();
 }
 
 function delM(id) {
   if (!confirm(tr('confirmM'))) return;
-  S.mechanics = S.mechanics.filter(x => x.id !== id);
+  S.mechanics = S.mechanics.filter(function(x){ return x.id !== id; });
   save(); renderM();
 }
 
-// ── Boot ──────────────────────────────────────────────
+// ── Boot ───────────────────────────────────────────────────────────────────
 applyLang();
 renderT();
 renderM();
